@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
+	<link rel="stylesheet" type="text/css" href="css/linkbutton.css">
+	<link rel="stylesheet" type="text/css" href="css/icon.css">
+	<style>
+		.toolbar{
+			height:30px;
+			padding:5px;
+		}
+	</style>
+	<script type="text/javascript" src="js/jquery-1.2.6.js"></script>
+	<script type="text/javascript" src="js/jquery.linkbutton.js"></script>
+	<script>
+		function enable(){
+			$('a.l-btn').linkbutton({disabled:false});
+		}
+		function disable(){
+			$('a.l-btn').linkbutton({disabled:true});
+		}
+	</script>
+</head>
+<body>
+	<div style="padding:5px;border-bottom:1px solid #ccc;">
+		<a href="#" onclick="enable()">enable</a> |
+		<a href="#" onclick="disable()">disable</a> |
+		<a href="#" onclick="javascript:$('#add').linkbutton({disabled:true})">disable add button</a> |
+		<a href="#" onclick="javascript:$('#add').linkbutton({disabled:false})">enable add button</a> | 
+		<a href="#" onclick="javascript:$('a.l-btn').linkbutton({plain:true})">make to plain</a> | 
+		<a href="#" onclick="javascript:$('a.l-btn').linkbutton({plain:false})">restore</a>  
+	</div>
+	<h3>立体按钮演示</h3>
+	<div class="toolbar">
+		<a id="add" href="#" class="l-btn" icon="icon-add">增加</a>
+		<a href="#" class="l-btn" icon="icon-remove">移除</a>
+		<a href="#" class="l-btn" icon="icon-save">保存</a>
+		<a href="#" disabled="true" class="l-btn" icon="icon-cut">剪切</a>
+		<a href="#" class="l-btn" onclick="javascript:alert('ttt')">文本按键</a>
+	</div>
+	<div class="toolbar">
+		<a href="#" class="l-btn" icon="icon-ok">确定</a>
+		<a href="#" class="l-btn" icon="icon-no">不要</a>
+		<a href="#" class="l-btn" icon="icon-cancel">取消</a>
+		<a href="#" class="l-btn" icon="icon-reload">刷新</a>
+		<a href="#" class="l-btn" icon="icon-search">查询</a>
+	</div>
+	<div class="toolbar">
+		<a href="#" class="l-btn" icon="icon-print">打印</a>
+		<a href="#" class="l-btn" icon="icon-help">帮助</a>
+		<a href="#" class="l-btn" icon="icon-undo">不做</a>
+		<a href="#" class="l-btn" icon="icon-redo">再做</a>
+		<a href="#" class="l-btn" icon="icon-back">返回</a>
+	</div>
+	
+	<h3>平面按钮演示</h3>
+	<div style="height:30px;padding:5px;background:#efefef;">
+		<a href="#" class="l-btn l-btn-plain" icon="icon-cancel">取消</a>
+		<a href="#" class="l-btn l-btn-plain" icon="icon-reload">刷新</a>
+		<a href="#" class="l-btn l-btn-plain" icon="icon-search">查询</a>
+		<a href="#" class="l-btn l-btn-plain">文本按键</a>
+		<a href="#" class="l-btn l-btn-plain" icon="icon-print">打印</a>
+	</div>
+</body>
+</html>

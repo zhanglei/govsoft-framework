@@ -1,0 +1,20 @@
+.messager-icon{
+	float:left;
+	width:47px;
+	height:32px;
+}
+.messager-error{
+	background:url('images/messager_error.gif') no-repeat scroll left top;
+}
+.messager-info{
+	background:url('images/messager_info.gif') no-repeat scroll left top;
+}
+.messager-question{
+	background:url('images/messager_question.gif') no-repeat scroll left top;
+}
+.messager-warning{
+	background:url('images/messager_warning.gif') no-repeat scroll left top;
+}
+.messager-input{
+	border:1px solid #ccc;
+}

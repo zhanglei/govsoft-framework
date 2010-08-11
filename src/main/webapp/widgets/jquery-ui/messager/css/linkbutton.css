@@ -1,0 +1,54 @@
+a.l-btn{
+	color:#444;
+	background:url('images/button_a_bg.gif') no-repeat top right;
+	font-size:12px;
+	text-decoration:none;
+	display:inline-block;
+	display:-moz-inline-stack;
+	*display:inline;
+	zoom:1;
+	height:24px;
+	padding-right:18px;
+}
+a.l-btn-plain{
+	background:transparent;
+	padding-right:5px;
+	margin:1px;
+}
+
+a.l-btn-disabled{
+	color:#ccc;
+}
+a.l-btn span.l-btn-left{
+	display:block;
+	background:url('images/button_span_bg.gif') no-repeat top left;
+	padding:5px 0px 5px 18px;
+	line-height:14px;
+}
+a.l-btn-plain span.l-btn-left{
+	background:transparent;
+	padding-left:5px;
+}
+
+a.l-btn span span.l-btn-text{
+	padding:2px 0px 1px 0px;
+}
+a:hover.l-btn{
+	background-position: bottom right;
+	outline:none;
+}
+a:hover.l-btn span.l-btn-left{
+	background-position: bottom left;
+}
+
+a:hover.l-btn-plain{
+	border:1px solid #7eabcd;
+	margin:0px;
+	background:url('images/button_plain_hover.png') repeat-x left bottom;
+}
+a:hover.l-btn-disabled{
+	background-position:top right;
+}
+a:hover.l-btn-disabled span.l-btn-left{
+	background-position:top left;
+}

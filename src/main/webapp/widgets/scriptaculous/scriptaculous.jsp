@@ -1,0 +1,1 @@
+<script src="${ctx}/widgets/scriptaculous/scriptaculous-1.8.3${suffix}.js${gzip}" type="text/javascript" charset="utf-8"></script>
