@@ -1,0 +1,49 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<head>
+	<title>DHTMLGoodies Spinner demo</title>
+	<script type="text/javascript" src="js/external/mootools.js"></script>
+	<link rel="stylesheet" type="text/css" href="css/Spinner.css"></script>
+	<script type="text/javascript" src="js/Spinner.js"></script>
+	<style type="text/css">
+	.DG-spinner{
+		width:60px;
+
+	}
+	</style>
+</head>
+<body>
+<form>
+<table>
+	<tr>
+		<td><label id="testLabel">Your age(Spinner created from markup):</label></td>
+		<td><input id="testElement" class="DG-spinner" maxlength="3" value="18" type="text" properties="maxValue:120,minValue:13,shiftIncrement:20,label:testLabel"></td>
+	</tr>
+	<tr>
+		<td><label for="dynamicSpinner" id="labelDynamicSpinner">Dynamically created spinner: </td>
+		<td id="spinboxcontainer"></td>
+	</tr>
+	<tr>
+		<td>Created from markup</td>
+		<td><input class="DG-spinner" maxlength="5" value="3" type="text"></td>
+	</tr>
+</table>
+</form>
+
+<script type="text/javascript">
+var spinner = new DG.Spinner( {
+	renderTo : 'spinboxcontainer',
+	id:'dynamicSpinner',
+	label: 'labelDynamicSpinner',
+	increment:0.1,
+	decimals:1,
+	styles: {
+		width:'40px'
+	},
+	value : 20,
+	name: 'mySpinner'
+});
+
+
+</script>
+</body>
+</html>

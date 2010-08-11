@@ -1,0 +1,497 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>GameInterpreter unit tests</title>
+    <link rel="stylesheet" type="text/css" href="/jsunit/css/jsUnitStyle.css">    
+    <script language="JavaScript" type="text/javascript" src="../external/mootools.js"></script>
+    <script language="JavaScript" type="text/javascript" src="../Spinner.js"></script>
+    <script language="JavaScript" type="text/javascript" src="/jsunit/app/jsUnitCore.js"></script>
+    
+    <script type="text/javascript">
+    
+    
+    function setUp() {
+    	document.body.innerHTML = '';    	
+    }
+    
+    function getSpinner(config) {
+    
+    	config = config || {};
+    	
+    	config = $merge({
+    		renderTo: document.body ,
+    		id: 'spinner',
+    		minValue : 0,
+    		maxValue : 100,
+    		value : 20,
+    		target : document.body   		
+    	}, config);	
+    	
+    	return new DG.Spinner(config);	
+    	
+    }
+    
+    function getEventMock(config) {
+    	
+    	return $merge({
+    		x:0,
+    		y:0,
+    		wheel : false    		
+    	}, config);	
+    	
+    }
+    
+    function testShouldPositionSpinBoxContainerRelative() {
+    	// when
+    	var spinner = getSpinner();
+    	
+    	// then
+    	assertEquals('relative', spinner.html.container.getStyle('position'));    		
+    	
+    }   
+    
+    function testShouldPositionArrowsContainerAbsolute() {
+     	// when
+    	var spinner = getSpinner();   	
+    	// then
+    	assertEquals('absolute', spinner.html.arrowsContainer.getStyle('position'));      	
+    }
+    
+    function testShouldCreateHtmlElementsForTheWidgetDynamically() {
+    	// when
+    	var spinner = getSpinner();    	
+    	
+    	// then
+    	assertEquals('Spinner container not created', 1, $$('.DG-spinner-container').length);
+    	assertEquals('Spinner input not created', 1, $$('.DG-spinner-input').length);
+    	assertEquals('Spinner arrows container not created', 1, $$('.DG-spinner-arrows-container').length);
+    	assertEquals('Spinner UP arrow not created', 1, $$('.DG-spinner-arrow-up').length);
+    	assertEquals('Spinner DOWN arrow not created', 1, $$('.DG-spinner-arrow-down').length);
+    	assertEquals('Spinner arrow SEPARATOR not created', 1, $$('.DG-spinner-arrow-separator').length);
+    	
+    	assertEquals(spinner.html.arrowsContainer, spinner.html.upArrow.parentNode);
+    	assertEquals(spinner.html.arrowsContainer, spinner.html.downArrow.parentNode);
+    }
+    
+    function testShouldBeAbleToUseMouseWheelToChangeSpinnerValue() {
+    	
+    	var spinner = getSpinner();
+
+    	var e = getEventMock({
+    		target : spinner.getEl(),
+    		wheel : 5   		
+    	});	
+    		
+    	spinner.getEl().fireEvent('focus', e);
+    	spinner.getEl().fireEvent('mousewheel', e);
+    	
+    	assertEquals(25, spinner.getValue());
+    	
+    }
+    
+    function testShouldNotBeAbleToUseMouseWheelToChangeSpinnerValueWhenItsDisabled() {
+    	
+    	var spinner = getSpinner({
+    		disableWheel : true,
+    		value : 20
+    	});
+
+    	var e = getEventMock({
+    		target : spinner.getEl(),
+    		wheel : 5   		
+    	});	
+    		
+    	spinner.getEl().fireEvent('mousewheel', e);
+    	
+    	assertEquals(20, spinner.getValue());
+    	
+    }
+    
+    function testShouldAddMouseOverEffectForTheArrows() {
+    	// given
+    	var spinner = getSpinner();
+    	var e = getEventMock({
+    		target : spinner.html.upArrow	
+    	});
+    	
+    	// when
+    	spinner.html.upArrow.fireEvent('mouseover',e);
+    	// then
+    	assertTrue('mouse over UP',spinner.html.upArrow.hasClass('DG-spinner-arrow-overeffect'));
+    	
+    	// when
+    	spinner.html.upArrow.fireEvent('mouseout',e);
+     	// then
+    	assertFalse(spinner.html.upArrow.hasClass('DG-spinner-arrow-overeffect'));   	
+    	
+		e = getEventMock({
+    		target : spinner.html.downArrow	
+    	});    	
+    	// when
+    	spinner.html.downArrow.fireEvent('mouseover',e);
+    	// then
+    	assertTrue('mouse over DOWN',spinner.html.downArrow.hasClass('DG-spinner-arrow-overeffect'));
+    	
+    	// when
+    	spinner.html.downArrow.fireEvent('mouseout',e);
+     	// then
+    	assertFalse(spinner.html.downArrow.hasClass('DG-spinner-arrow-overeffect'));    	
+    	
+    }
+    
+    function testShouldAddMouseDownEffectForTheArrows() {
+    	// given
+    	var spinner = getSpinner();
+    	var e = getEventMock({
+    		target : spinner.html.upArrow	
+    	});
+    	
+    	// when
+    	spinner.html.upArrow.fireEvent('mousedown',e);
+    	// then
+    	assertTrue('mouse down UP',spinner.html.upArrow.hasClass('DG-spinner-arrow-downeffect'));
+    	
+    	// when
+    	spinner.html.upArrow.fireEvent('mouseup',e);
+     	// then
+    	assertFalse(spinner.html.upArrow.hasClass('DG-spinner-arrow-downeffect'));   	
+    	
+		e = getEventMock({
+    		target : spinner.html.downArrow	
+    	});    	
+    	// when
+    	spinner.html.downArrow.fireEvent('mousedown',e);
+    	// then
+    	assertTrue('mouse down DOWN',spinner.html.downArrow.hasClass('DG-spinner-arrow-downeffect'));
+    	
+    	// when
+    	spinner.html.downArrow.fireEvent('mouseup',e);
+     	// then
+    	assertFalse(spinner.html.downArrow.hasClass('DG-spinner-arrow-downeffect'));    	
+    	
+    }
+    
+    function testShouldBeAbleToUseCustomIncrementValue() {
+    	// given
+    	var spinner = getSpinner( {
+    		increment: 5    		
+    	});
+    	
+    	var e = getEventMock( {
+    		wheel:2
+    	});
+    	
+    	// when
+    	spinner.getEl().fireEvent('focus', e);
+    	spinner.getEl().fireEvent('mousewheel', e);
+    	
+    	// then
+    	assertEquals(5, spinner.config.increment);
+    	assertEquals(30, spinner.getValue());     	
+    }
+    
+    function testShouldBeAbleToChangeValueByClickingArrowButtons() {
+    	// given
+    	var spinner = getSpinner( {
+    		increment: 3   		
+    	});    	
+    	
+    	var e = getEventMock({
+    		target: spinner.html.upArrow
+    	});
+    	
+    	// when    	
+    	spinner.html.upArrow.fireEvent('mousedown', e);
+    	spinner.html.upArrow.fireEvent('mouseup', e);
+    	
+    	// then
+    	assertEquals(23, spinner.getValue());
+    }
+    
+    function testShouldBeAbleToSpecifyCssRulesForTheInput() {
+    	// given
+    	var spinner = getSpinner( {
+    		styles: {
+    			width:'40px'
+    		}
+    	});	
+    		
+    	// then
+    	assertEquals('40px', spinner.getEl().getStyle('width'));
+    	
+    }
+    
+    function testShouldBeAbleToSpecifyMinValue() {
+    	// given
+    	var spinner = getSpinner( {
+    		minValue: 20
+    	});
+    	
+    	// when
+    	spinner.setValue(10);
+    	
+    	// then
+    	assertEquals(20, spinner.getValue());
+    	
+    	// when
+    	spinner.increment(-1);
+    	
+    	// then
+    	assertEquals(20, spinner.getValue());
+    }
+    function testShouldBeAbleToSpecifyMaxValue() {
+    	// given
+    	var spinner = getSpinner( {
+    		maxValue: 120
+    	});
+    	
+    	// when
+    	spinner.setValue(150);
+    	
+    	// then
+    	assertEquals(120, spinner.getValue());
+    	
+    	// when
+    	spinner.increment(5);
+    	
+    	// then
+    	assertEquals(120, spinner.getValue());    	
+    }
+    
+    function testShouldNotBeAbleToTypeNonNumericValues() {
+    	// given
+    	var spinner = getSpinner({
+    		decimals:3,
+    		minValue: -100
+    	});
+    	
+    	
+    	
+    	// when
+    	var e = getEventMock({
+    		key : 'a'
+    	});
+    	
+    	// then
+    	
+    	assertFalse(spinner._validateKeyStroke(e));
+    	
+    	
+    	// when
+    	e.key = '.';
+    	e.code = 190;
+    	spinner.getEl().value = 20;
+    	// then
+    	assertTrue('Could not validate period(.)', spinner._validateKeyStroke(e));
+    	
+    	// when
+    	e.key = '0';
+    	e.code = e.key.charCodeAt();
+    	// then
+    	assertTrue(spinner._validateKeyStroke(e));  
+    	
+    	// when
+    	e.key = '-';
+    	e.code = e.key.charCodeAt();
+    	assertTrue('Could not validate the negative sign', spinner._validateKeyStroke(e)); 
+    	  	
+    }
+    
+    function testShouldBeAbleToNudgeLabel() {
+    	// given
+    	var label = new Element('label');
+    	label.setStyle('width','200px');
+    	label.id = 'mylabel';
+    	document.body.adopt(label);
+    	
+    	label.getSize = function() {
+    		return {
+    			x:100
+    		}
+    	}
+    	
+    	var spinner = getSpinner({
+    		label:'mylabel',
+    		value : 10,
+    		minValue:0,
+    		maxValue:200
+    	});    		
+    	
+    	var e = getEventMock({
+    		page: {
+    			x:20   
+    		},
+    		target: label		
+    	});
+    	
+    	// when
+    	label.fireEvent('mousedown', e);
+    	e.page.x = 40;
+    	Window.getDocument().fireEvent('mousemove', e);
+    	label.fireEvent('mouseup',e);
+    	labelWidth = label.getSize().x;
+    	
+    	// then
+    	assertEquals(50, spinner.getValue());
+    }
+    
+    function testShouldRenderComponent() {
+    	// given
+    	var spinner = getSpinner();
+    	
+    	//then
+    	assertEquals(document.body, spinner.html.container.parentNode);
+    	
+    }
+    
+    function testShouldBeAbleToCreateSpinnerFromMarkup() {
+    	// given
+    	var el = new Element('input');
+    	el.setProperties({
+    		type: 'text',
+    		'class' : 'DG-spinner'		
+    	});
+    	
+    	document.body.adopt(el);
+    	
+    	// when
+    	DG._createSpinBoxesFromMarkup();
+    	
+    	// then
+    	assertEquals('Spinner container not created', 1, $$('.DG-spinner-container').length);
+    }
+    
+    function testShouldBeAbleToSpecifySpinnerShiftInterval() {
+    	// given
+    	var spinner = getSpinner({
+    		shiftIncrement : 20,
+    		increment: 0.5
+    	});   
+    	
+    	var e = getEventMock({
+    		target: spinner.html.upArrow,
+    		shift : true
+    	});
+    	
+    	// when
+    	spinner.html.upArrow.fireEvent('mousedown', e);
+    	spinner.html.upArrow.fireEvent('mouseup', e);
+    	
+    	// then
+    	assertEquals(40, spinner.getValue());    	    	 	
+    	
+    }
+    
+    function testShouldBeAbleToGiveInputElementAName() {
+    	
+    	// given
+    	var spinner = getSpinner( {
+    		name : 'spinner-element',
+    		id: 'mySpinner'
+    	});
+    	    	
+    	// then
+    	assertEquals('spinner-element', spinner.getEl().name);    		
+    	
+    }
+    
+    function testShouldBeAbleToChangeValuesByUsingArrowKeys() {
+    	// given
+    	var spinner = getSpinner( {
+    		value : 20,
+    		increment : 2
+    	});
+    	
+    	var e = getEventMock({
+    		key:'up'
+    	});
+    	
+    	// when
+    	spinner.getEl().fireEvent('keydown',e);
+    	
+    	// then
+    	assertEquals(22, spinner.getValue());
+    	
+    	// when
+    	e.key = 'down';
+    	spinner.getEl().fireEvent('keydown',e);
+    	spinner.getEl().fireEvent('keydown',e);
+    	
+    	// then
+    	assertEquals(18, spinner.getValue());
+    	
+    		
+    	
+    }
+    
+    function testShouldNotBeAbleToChangeValuesWithTheArrowKeysWhenThisFeatureIsDiabled() {
+    	
+    	// given
+    	var spinner = getSpinner( {
+    		value : 20,
+    		increment : 2,
+    		disableArrowKeys : true
+    	});    	
+    	
+     	var e = getEventMock({
+    		key:'up'
+    	});
+    	
+    	// when
+    	spinner.getEl().fireEvent('keydown',e);   	
+    	// then
+    	assertEquals(20, spinner.getValue());    	
+    }
+    
+    function testShouldBeAbleToDisableSpinner() {
+    	// given
+    	var spinner = getSpinner( {
+    		value : 20,
+    		increment : 2,
+    		disabled : true
+    	});  
+
+    	var e = getEventMock({
+    		key:'up'
+    	});
+    	
+    	// when
+    	spinner.getEl().fireEvent('keydown',e);    	
+    	// then
+    	assertEquals('mouse up ', 20, spinner.getValue());
+    	
+    	// given 	
+    	spinner.setValue(20);
+    	
+    	// when
+     	e = getEventMock({
+    		target : spinner.html.upArrow	
+    	});   	
+    	spinner.html.upArrow.fireEvent('mousedown', e);
+    	spinner.html.upArrow.fireEvent('mouseup', e);
+    	
+    	// then
+    	assertEquals(20, spinner.getValue());   	
+    	
+    	assertTrue('Arrow container not assigned to the disabled css class', spinner.html.arrowsContainer.hasClass('DG-spinner-arrows-container-disabled'));
+    	assertTrue('Main container not assigned to the disabled css class', spinner.html.container.hasClass('DG-spinner-container-disabled'));
+    	
+    	// given
+    	spinner.enable();
+    	
+    	// when
+    	spinner.html.upArrow.fireEvent('mousedown', e);
+    	spinner.html.upArrow.fireEvent('mouseup', e);
+
+    	// then    	
+    	assertEquals(22, spinner.getValue()); 
+    	
+    }
+    
+    </script>
+</head>
+<body>
+</body>
+</html>

@@ -1,0 +1,1 @@
+<script src="${ctx}/widgets/calendar/WdatePicker${suffix}.js${gzip}" type="text/javascript" charset="utf-8"></script>	

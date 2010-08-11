@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.0.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd"
+	default-lazy-init="true">
+
+	<!-- 定义受环境影响易变的变量 -->
+	<bean id="propertyConfigurer"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath*:jdbc.properties</value>
+				<value>classpath*:hibernate.properties</value>
+				<value>classpath*:memcached.properties</value>
+			</list>
+		</property>
+	</bean>
+
+	<!-- 使用annotation 自动注册bean,并保证@Required,@Autowired的属性被注入 -->
+	<context:component-scan base-package="com.govsoft" />
+
+	<!-- DataSource for J2EE environments -->
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+		destroy-method="close">
+		<property name="driverClass" value="${jdbc.driverClass}" />
+		<property name="jdbcUrl" value="${jdbc.jdbcurl}" />
+		<property name="user" value="${jdbc.user}" />
+		<property name="password" value="${jdbc.password}" />
+		<!--连接池中保留的最小连接数。-->
+		<property name="minPoolSize" value="5" />
+		<!--连接池中保留的最大连接数。Default: 15 -->
+		<property name="maxPoolSize" value="30" />
+		<!--初始化时获取的连接数，取值应在minPoolSize与maxPoolSize之间。Default: 3 -->
+		<property name="initialPoolSize" value="10" />
+		<!--最大空闲时间,60秒内未使用则连接被丢弃。若为0则永不丢弃。Default: 0 -->
+		<property name="maxIdleTime" value="60" />
+		<!--当连接池中的连接耗尽的时候c3p0一次同时获取的连接数。Default: 3 -->
+		<property name="acquireIncrement" value="5" />
+		<!--
+				JDBC的标准参数，用以控制数据源内加载的PreparedStatements数量。但由于预缓存的statements
+				属于单个connection而不是整个连接池。所以设置这个参数需要考虑到多方面的因素。
+				如果maxStatements与maxStatementsPerConnection均为0，则缓存被关闭。Default: 0
+			-->
+		<property name="maxStatements" value="0" />
+		<!--每60秒检查所有连接池中的空闲连接。Default: 0 -->
+		<property name="idleConnectionTestPeriod" value="60" />
+		<!--定义在从数据库获取新连接失败后重复尝试的次数。Default: 30 -->
+		<property name="acquireRetryAttempts" value="30" />
+		<!--
+				获取连接失败将会引起所有等待连接池来获取连接的线程抛出异常。但是数据源仍有效
+				保留，并在下次调用getConnection()的时候继续尝试获取连接。如果设为true，那么在尝试
+				获取连接失败后该数据源将申明已断开并永久关闭。Default: false
+			-->
+		<property name="breakAfterAcquireFailure" value="true" />
+		<!--
+				因性能消耗大请只在需要的时候使用它。如果设为true那么在每个connection提交的
+				时候都将校验其有效性。建议使用idleConnectionTestPeriod或automaticTestTable
+				等方法来提升连接测试的性能。Default: false
+			-->
+		<property name="testConnectionOnCheckout" value="false" />
+	</bean>
+
+	<!-- Hibernate SessionFactory definition using exposed dataSource -->
+	
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" /> 
+		<property
+			name="packagesToScan"> 
+			<list> 
+				<value>com.govsoft.*.model</value>
+			</list> 
+		</property> 
+		<property name="hibernateProperties"> 
+			<props>
+				<prop key="hibernate.dialect">
+					${hibernate.dialect}
+				</prop> 
+				<prop key="hibernate.show_sql">
+					${hibernate.show_sql}
+				</prop> 
+				<prop key="hibernate.default_schema">
+					${hibernate.default_schema}
+				</prop>
+				<prop key="hibernate.hbm2ddl.auto">
+					 ${hibernate.hbm2ddl.auto} 
+				</prop>
+				<prop key="hibernate.use_sql_comments">
+					 ${hibernate.use_sql_comments} 
+				</prop>
+				<prop key="hibernate.format_sql">
+					${hibernate.format_sql}
+				</prop> 
+				<prop key="hibernate.bytecode.use_reflection_optimizer">
+					true
+				</prop> 
+				<prop key="hibernate.cache.use_query_cache">
+					${hibernate.cache.use_query_cache}
+				</prop>
+				<prop key="hibernate.cache.provider_class">
+					${hibernate.cache.provider_class}
+				</prop>
+				<prop key="hibernate.jdbc.fetch_size">
+					${hibernate.jdbc.fetch_size}
+				</prop> 
+				<prop key="hibernate.hibernate.use_outer_join">
+					${hibernate.hibernate.use_outer_join}
+				</prop>
+				<prop key="hibernate.jdbc.batch_size">
+					${hibernate.jdbc.batch_size}
+				</prop>
+				<prop key="hibernate.memcached.servers">
+					${hibernate.memcached.servers}
+				</prop>
+			</props> 
+		</property> 
+	</bean>
+	
+	<!--
+			<bean id="sessionFactory"
+				class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+				<property name="dataSource" ref="dataSource" />
+				<property name="packagesToScan">
+					<list>
+						<value>com.govsoft.*.model</value>
+					</list>
+				</property>
+				<property name="hibernateProperties">
+					<props>
+						<prop key="hibernate.dialect">
+							org.hibernate.dialect.OracleDialect </prop>
+						<prop key="hibernate.show_sql"> true </prop>
+						<prop key="hibernate.default_schema">govsoft</prop>
+						<prop key="hibernate.hbm2ddl.auto"> validate </prop>
+						<prop key="hibernate.format_sql"> true </prop>
+						<prop key="hibernate.bytecode.use_reflection_optimizer"> true </prop>
+						<prop key="hibernate.cache.use_query_cache"> true </prop>
+						<prop key="hibernate.cache.provider_class">
+							com.googlecode.hibernate.memcached.MemcachedCacheProvider </prop>
+						<prop key="hibernate.jdbc.fetch_size"> 50 </prop>
+						<prop key="hibernate.hibernate.use_outer_join"> true </prop>
+						<prop key="hibernate.jdbc.batch_size"> 50 </prop>
+						<prop key="hibernate.memcached.servers"> 127.0.0.1:11211 </prop>
+					</props>
+				</property>
+			</bean>
+		-->
+	<!-- 事务管理器配置,单数据源事务 -->
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<!-- 使用annotation定义事务 -->
+	<tx:annotation-driven transaction-manager="transactionManager" />
+	<!--
+			用于持有ApplicationContext,可以使用ApplicationContextHolder.getBean('xxxx')的静态方法得到spring
+			bean对象
+		-->
+	<bean class="com.govsoft.framework.common.util.SpringContextUtils" />
+	
+	
+	<bean id="memcachedClient" class="net.rubyeye.xmemcached.utils.XMemcachedClientFactoryBean" destroy-method="shutdown">                
+		<property name="servers" value="${cache.servers}"/>
+		<!-- server's weights -->                
+		<property name="weights">
+			<list>
+				<value>${cache.weights}</value>
+			</list>	
+		</property>
+		<!-- nio connection pool size -->                
+		<property name="connectionPoolSize" value="${cache.connectionPoolSize}"/>               
+		<!-- Use binary protocol,default is TextCommandFactory -->                
+		<property name="commandFactory">                   
+			<bean class="net.rubyeye.xmemcached.command.BinaryCommandFactory"/>                
+		</property>                
+		<!-- Distributed strategy -->                
+		<property name="sessionLocator">                        
+			<bean class="net.rubyeye.xmemcached.impl.KetamaMemcachedSessionLocator"/>                
+		</property>        
+		<!-- Serializing transcoder -->      
+		<property name="transcoder">                        
+			<bean class="net.rubyeye.xmemcached.transcoders.SerializingTranscoder" />                
+		</property>                     
+		<!-- ByteBuffer allocator --> 
+		<property name="bufferAllocator">                        
+			<bean class="net.rubyeye.xmemcached.buffer.SimpleBufferAllocator"/>                
+		</property>        
+	</bean>
+</beans>

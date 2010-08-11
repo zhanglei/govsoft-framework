@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
+	<link rel="stylesheet" type="text/css" href="css/dialog.css">
+	<link rel="stylesheet" type="text/css" href="css/icon.css">
+	<link rel="stylesheet" type="text/css" href="css/linkbutton.css">
+	<link rel="stylesheet" type="text/css" href="css/shadow.css">
+	<script type="text/javascript" src="js/jquery-1.2.6.js"></script>
+	<script type="text/javascript" src="js/jquery.draggable.js"></script>
+	<script type="text/javascript" src="js/jquery.resizable.js"></script>
+	<script type="text/javascript" src="js/jquery.linkbutton.js"></script>
+	<script type="text/javascript" src="js/jquery.shadow.js"></script>
+	<script type="text/javascript" src="js/jquery.dialog.js"></script>
+	<style>
+		input, textarea{
+			border:1px solid #ccc;
+			margin-bottom:5px;
+		}
+	</style>
+	<script type="text/javascript">
+		$(function(){
+			$('#dlg1').dialog({
+				iconCls: 'icon-save',
+				buttons:{
+					'Save':function(){
+						alert('ok');
+					},
+					'Cancel':function(){
+						$('#dlg1').dialog({closed:true});
+					}
+				}
+			});
+			
+		});
+
+		function open1(){
+			$('#dlg1').dialog({
+				closed:false
+			});
+		}
+		function close1(){
+			$('#dlg1').dialog({
+				closed:true
+			});
+		}
+	</script>
+</head>
+<body>
+	<a href="#" onclick="open1();">open</a>
+	<a href="#" onclick="close1();">close</a>
+	
+	
+	<div id="dlg1" title="Save Info" style="width:320px;">
+		<div style="padding:20px;">
+			<div>subject:</div>
+			<div><input type="text" style="width:250px;"></div>
+			<div>email:</div>
+			<div><input type="text" style="width:250px;"></div>
+			<div>content:</div>
+			<div><textarea style="width:250px;height:100px;"></textarea></div>
+		</div>
+	</div>
+</body>
+</html>

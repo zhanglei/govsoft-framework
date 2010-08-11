@@ -1,0 +1,29 @@
+<html>
+<head>
+<style>
+body
+{
+  background-color: white;
+  font-size: 9pt;
+}
+
+table
+{
+  font-size: 9pt;
+}
+</style>
+<title>${title}</title>
+</head>
+<body scroll="no">
+  <table width="100%" height="100%" style="font-size: 9pt">
+    <tr valign="bottom">
+      <td align="center">${message}</td>
+    </tr>
+    <tr valign="top">
+      <td align="center"><img src="${request.getContextPath()}/dorado/smartweb2.loadFile.d?file=/skins/${skin}/working.gif"></td>
+    </tr>
+  </table>
+  <iframe src="${request.getContextPath()}/dorado/smartweb2.showRPCSubmitter.d" style="visibility: hidden">
+  </iframe>
+</body>
+</html>

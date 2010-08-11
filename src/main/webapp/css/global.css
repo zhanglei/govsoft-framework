@@ -1,0 +1,63 @@
+body {
+	background:none repeat scroll 0 0 #FFFFFF;
+	color:#000000;
+	overflow:auto;
+	padding:0;
+	margin:0;
+	font-family: verdana;
+	font-size: 12px;
+}
+
+a:link {
+	color: blue;
+	text-decoration: none;
+}
+
+a:hover {
+	color: #000099;
+	text-decoration: none;
+}
+
+a:active {
+	color: #000000;
+}
+
+a:visited {
+	text-decoration: none;
+	color: #000000;
+}
+
+table {
+	font-family: verdana;
+	font-size: 12px;
+}
+
+form {
+	margin: 0px;
+}
+
+input {
+	font-family: verdana;
+	font-size: 12px;
+}
+
+hr {
+	border-style: dotted;
+	border-width: 1px;
+	border-color: gray;
+	margin: 0px;
+	height: 0;
+}
+
+p {
+	margin-top: 5px;
+	margin-bottom: 5px;
+	margin-left: 0px;
+	margin-right: 0px;
+}
+
+ul {
+	Margin: 0px;
+	Padding: 0px;
+	list-style: none;
+}

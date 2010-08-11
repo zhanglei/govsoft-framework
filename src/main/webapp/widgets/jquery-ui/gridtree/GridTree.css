@@ -1,0 +1,172 @@
+.divClass {
+	height: 250px;
+	width: 100%;
+	overflow: auto;
+}
+
+td {
+	height: 22px;
+	border-bottom: 1px solid black;
+	border-right: 1px solid black;
+	cursor: default;
+}
+
+tr{
+	 border-bottom:1px solid black;
+     border-right:1px solid black;
+     cursor:default;
+}
+
+.msgdiv{
+	display:none;
+	position:absolute;
+	background-color:blue;
+	font-size:12px;
+	height:18px;
+	color:#fffff;
+}
+
+.menudiv{
+
+}
+
+.tableRegion {
+	border:1px #000000 solid;
+	padding:0px;
+	margin:0px;
+	border-collapse: collapse;
+	table-layout:auto;
+}
+
+.tablehead {
+	overflow: hidden;
+	zoom: 1;
+	color: #15428b;
+	font: bold 11px tahoma, arial, verdana, sans-serif;
+	padding: 5px 3px 4px 5px;
+	border: 1px solid #99bbe8;
+	line-height: 15px;
+	text-align:center;
+	background: transparent
+		url(./images/extimg/white-top-bottom.gif) repeat-x 0 -1px;
+}
+
+.pagebarbtn {
+	background-color: transparent;
+	background-repeat: no-repeat;
+	background-position: center;
+	border: 0px #dddddd none;
+	width: 24px;
+	height: 25px;
+	cursor: pointer;
+	vertical-align: -2px;
+}
+
+.jumpPage {
+	background-image: url(./images/gotoPage.gif);
+}
+
+.firstPage {
+	background-image: url(./images/firstPage.gif);
+}
+
+.prevPage {
+	background-image: url(./images/prevPage.gif);
+}
+
+.nextPage {
+	background-image: url(./images/nextPage.gif);
+}
+
+.lastPage {
+	background-image: url(./images/lastPage.gif);
+}
+
+.disFirstPage {
+	background-image: url(./images/firstPageDisabled.gif);
+}
+
+.disPrevPage {
+	background-image: url(./images/prevPageDisabled.gif);
+}
+
+.disNextPage {
+	background-image: url(./images/nextPageDisabled.gif);
+}
+
+.disLastPage {
+	background-image: url(./images/lastPageDisabled.gif);
+}
+
+.checkCell{
+	text-align:center;
+}
+
+.pagebartd {
+	white-space: nowrap;
+	word-break: keep-all;
+	word-wrap: normal;
+	width: 50px;
+}
+
+.pagebartable {
+	border: 0px solid black;
+	font-size: 13px;
+}
+
+table {
+	border-top: 1px solid black;
+	border-left: 1px solid black;
+	font-size: 13px;
+}
+
+input {
+	border: 1px solid black;
+}
+
+.TrOdd {
+	font-family: "????";
+	font-size: 12px;
+	background-color: #ffffff;
+}
+
+.TrEven {
+	font-family: "????";
+	font-size: 12px;
+	background-color: #fafafa;
+}
+
+.highlight {
+	background: #efefef url(./images/extimg/row-over.gif) repeat-x left top;
+}
+
+
+.pageNavigationTool {
+	white-space:nowrap;word-break:keep-all;word-wrap:normal;
+	width:25px;
+}
+
+.pageNavigationNearPageTool {
+	white-space:nowrap;word-break:keep-all;word-wrap:normal;
+	padding-top:3px;
+	text-align:center;
+}
+
+.pageSizeTool {
+	padding-top:2px;
+	width:120px;
+	text-align:left;
+}
+
+.pageJumpTool {
+	width:95px;
+}
+
+.pageBar td{
+	color:#000000;
+	border:0px #d6d6d6 solid;
+	padding:2px;
+	height:23px;
+	white-space:nowrap;word-break:keep-all;word-wrap:normal;
+	overflow:hidden;
+}

@@ -1,0 +1,260 @@
+.divClass {
+	height: 250px;
+	width: 100%;
+	overflow: auto;
+}
+
+td {
+	color:#000000;
+	border:1px #d6d6d6 solid;
+	padding:2px;
+	height:23px;
+	white-space:nowrap;word-break:keep-all;word-wrap:normal;
+	overflow:hidden;
+}
+
+.msgdiv{
+	display:none;
+	position:absolute;
+	background-color:red;
+	font-size:11px;
+	height:16px;
+	color:#fffff;
+}
+
+.resizeDivClass     
+{     
+    position:relative;     
+    width:44;     
+    z-index:1;     
+    left:expression(this.parentElement.offsetWidth - 3);     
+    cursor:e-resize;   
+       
+}     
+
+.tablehead {	
+	background-image:url(./images/ecimg/table/headerBg.gif);
+	background-color:#dddddd;
+	white-space:nowrap;word-break:keep-all;word-wrap:normal;
+	color:#3A3A3A;
+	font-weight:bolder;
+	height:23px;
+	text-align:center;
+	overflow:visible;
+	font-size:12px;	
+}
+
+.pagebarbtn {
+	background-color: transparent;
+	background-repeat: no-repeat;
+	background-position: center;
+	border: 0px #dddddd none;
+	width: 24px;
+	height: 25px;
+	cursor: pointer;
+	vertical-align: -2px;
+}
+
+.checkCell{
+	text-align:center;
+}
+
+.jumpPage {
+	background-image: url(./images/ecimg/table/gotoPage.gif);
+}
+
+.firstPage {
+	background-image: url(./images/ecimg/table/firstPage.gif);
+}
+
+.prevPage {
+	background-image: url(./images/ecimg/table/prevPage.gif);
+}
+
+.nextPage {
+	background-image: url(./images/ecimg/table/nextPage.gif);
+}
+
+.lastPage {
+	background-image: url(./images/ecimg/table/lastPage.gif);
+}
+
+.pageNavigationTool {
+	white-space:nowrap;word-break:keep-all;word-wrap:normal;
+	width:25px;
+}
+
+.pageNavigationNearPageTool {
+	white-space:nowrap;word-break:keep-all;word-wrap:normal;
+	padding-top:3px;
+	text-align:center;
+}
+
+.pageSizeTool {
+	padding-top:2px;
+	width:120px;
+	text-align:left;
+}
+
+.pageNavigationNearPageTool A {
+	width:12px;
+	text-decoration : none;
+}
+
+.pageNavigationNearPageTool B {
+	width:12px;
+	color: #999999;
+}
+
+.pageJumpTool {
+	width:95px;
+}
+
+.separatorTool {
+	font-size:1px;	
+}
+
+.disFirstPage {
+	background-image: url(./images/ecimg/table/firstPageDisabled.gif);
+}
+
+.disPrevPage {
+	background-image: url(./images/ecimg/table/prevPageDisabled.gif);
+}
+
+.disNextPage {
+	background-image: url(./images/ecimg/table/nextPageDisabled.gif);
+}
+
+.disLastPage {
+	background-image: url(./images/ecimg/table/lastPageDisabled.gif);
+}
+
+.pageBar{
+	font-size:12px;	
+}
+
+.pageBar select {
+	width:50px;
+	font-size:11px;
+	font-family: Verdana;
+}
+
+.pagebartd {
+}
+
+.pagebartable {
+}
+
+.pagebartable td {
+}
+
+.tablehead , .tableRegion .tablehead td {
+	background-image:url(./images/ecimg/table/headerBg.gif);
+	background-color:#dddddd;
+	white-space:nowrap;word-break:keep-all;word-wrap:normal;
+	color:#3A3A3A;
+	font-weight:bolder;
+	height:23px;
+	text-align:center;
+	overflow:visible;
+}
+
+.tableRegion {
+	border:1px #d6d6d6 solid;
+	padding:0px;
+	margin:0px;
+	border-collapse: collapse;
+	table-layout:auto;
+}
+
+.tableRegion td table td {
+	color:#000000;
+	border:0px #d6d6d6 solid;
+	padding:2px;
+	height:23px;
+	white-space:nowrap;word-break:keep-all;word-wrap:normal;
+	overflow:hidden;
+}
+
+input {
+	border: 1px solid black;
+}
+
+.TrOdd td{
+	background-color: #FFFFFF;
+}
+
+.TrOdd td,.TrEven td{
+	font-size:11px;	
+}
+.TrEven td{
+	background-color: #f3f4f3;
+}
+
+.selectlight td {
+	background-color: #ffeedd;	
+}
+
+.tableRegion {
+	margin: 0;
+	padding: 0;
+}
+
+.toolbarTable{
+	border:0px red solid;
+	width:100%;
+}
+
+.toolbarTable td {
+	border:0px none red;
+}
+
+.statusTool {
+	border:0px solid red;
+	padding-top:2px;
+	text-align: right;
+	white-space:nowrap;word-break:keep-all;word-wrap:normal;
+}
+
+tr{
+	 border-bottom:1px solid black;
+     border-right:1px solid black;
+     cursor:default;
+}
+.highlight td{
+	background-color: #ddeeff;	
+}
+
+.highlight{
+	background-color: #ddeeff;
+}
+
+.menuContentDiv{
+	cursor:pointer;
+}
+/** 右键菜单的主要的外面的大的div的样式 */
+.menuDiv{
+	position:absolute;
+	font-family:Tahoma;
+	font-size:12px;
+	padding:2px;
+	visibility:hidden;
+	width:100px;
+	height:100px;
+	background-color: white;
+	z-index:2;
+	border:1px solid green;
+	
+}
+
+.menuTable{
+	border:0px;
+	cellpadding:0px;
+	cellspacing:0px;
+	background-color:#cecece;
+	font-family:Tahoma;
+	font-size:12px;
+	width:100px;
+}
+

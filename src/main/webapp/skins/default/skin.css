@@ -1,0 +1,14 @@
+/**
+*login css
+*/
+#login {
+		
+}
+
+#login .enter-btn {
+	background:url(images/enter.gif) no-repeat;
+}
+
+#login .reset-btn {
+	background:url(images/reset.gif) no-repeat;
+}

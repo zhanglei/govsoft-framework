@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+<title>图片预览效果</title>
+<script src="CJL.0.1.min.js"></script>
+<script src="QuickUpload.js"></script>
+<script src="ImagePreviewd.js"></script>
+</head>
+<body>
+<style>
+.perview {width:600px;background:#fff;font-size:12px; border-collapse:collapse;}
+.perview td, .perview th {padding:5px;border:1px solid #ccc;}
+.perview th {background-color:#f0f0f0; height:20px;}
+.perview a:link, .perview a:visited, .perview a:hover, .perview a:active {color:#00F;}
+.perview table{ width:100%;border-collapse:collapse;}
+</style>
+<table border="0" class="perview">
+	<tr>
+			<th>选择文件</th>
+			<th width="50%">预览图</th>
+		</tr>
+		<tr>
+			<td height="200"><input id="idFile" name="pic" type="file" /></td>
+			<td align="center"><img id="idImg" /></td>
+		</tr>
+	</tbody>
+</table>
+<script>
+
+var ip = new ImagePreview( $$("idFile"), $$("idImg"), {
+	maxWidth: 200, maxHeight: 200, action: "ImagePreview.ashx"
+});
+ip.img.src = ImagePreview.TRANSPARENT;
+ip.file.onchange = function(){ ip.preview(); };
+
+</script>
+<br />
+<style>
+/*file样式*/
+#idPicFile {
+	width:80px;height:20px;overflow:hidden;position:relative;
+	background:url(http://www.cnblogs.com/images/cnblogs_com/cloudgamer/169629/o_addfile.jpg) center no-repeat;
+}
+#idPicFile input {
+	font-size:20px;cursor:pointer;
+	position:absolute;right:0;bottom:0;
+	filter:alpha(opacity=0);opacity:0;
+	outline:none;hide-focus:expression(this.hideFocus=true);
+}
+</style>
+<table class="perview">
+	<tr>
+		<th align="right"> 选择图片： </th>
+		<td width="75%"> <div id="idPicFile"> </div> </td>
+	</tr>
+	<tr>
+		<td colspan="2"><table>
+				<thead>
+					<tr>
+						<th> 文件路径 </th>
+						<th width="30%"> 预览图 </th>
+						<th width="20%"> 操作 </th>
+					</tr>
+				</thead>
+				<tbody id="idPicList">
+					<tr>
+						<td></td>
+						<td align="center"></td>
+						<td align="center"><a href="#">移除</a></td>
+					</tr>
+				</tbody>
+			</table></td>
+	</tr>
+</table>
+<script>
+
+var table = $$("idPicList"), model = table.removeChild(table.rows[0]);
+
+function AddPreview(){
+	var file = document.createElement("input"),
+		img = document.createElement("img"),
+		ip = new ImagePreview( file, img, {
+				maxWidth:	150,
+				maxHeight:	100,
+				action:		"ImagePreview.ashx",
+				onErr:		function(){ alert("载入预览出错！"); ResetFile(file); },
+				onCheck:	CheckPreview,
+				onShow:		ShowPreview
+			});
+	file.type = "file"; file.name = "pic";
+	file.onchange = function(){ ip.preview(); };
+	$$("idPicFile").appendChild(file);
+}
+
+//检测程序
+var exts = "jpg|gif|bmp", paths = "|";
+function CheckPreview(){
+	var value = this.file.value, check = true;
+	if ( !value ) {
+		check = false; alert("请先选择文件！");
+	} else if ( !RegExp( "\.(?:" + exts + ")$$", "i" ).test(value) ) {
+		check = false; alert("只能上传以下类型：" + exts);
+	} else if ( paths.indexOf( "|" + value + "|" ) >= 0 ) {
+		check = false; alert("已经有相同文件！");
+	}
+	check || ResetFile(this.file);
+	return check;
+}
+
+//显示预览
+function ShowPreview(){
+	var row = table.appendChild(model.cloneNode(true)),
+		file = this.file, value = file.value, oThis = this;
+	
+	row.appendChild(file).style.display = "none";
+	row.cells[0].innerHTML = value;
+	row.cells[1].appendChild(this.img);
+	
+	row.getElementsByTagName("a")[0].onclick = function(){
+		oThis.dispose(); table.removeChild(row);
+		paths = paths.replace(value, ""); return false;
+	};
+	
+	paths += value + "|";
+	AddPreview();
+}
+
+AddPreview();
+
+
+function ResetFile(file){
+	file.value = "";//ff chrome safari
+	if ( file.value ) {
+		if ( $$B.ie ) {//ie
+			with(file.parentNode.insertBefore(document.createElement('form'), file)){
+				appendChild(file); reset(); removeNode(false);
+			}
+		} else {//opera
+			file.type = "text"; file.type = "file";
+		}
+	}
+}
+
+</script>
+</body>
+</html>
