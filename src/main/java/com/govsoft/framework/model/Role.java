@@ -66,6 +66,14 @@ public class Role extends BaseEntity {
 	@ForeignKey(name = "fk_role_menu", inverseName = "fk_menu_role")
 	private Set<Menu> menus = new HashSet<Menu>(0);
 
+	/**
+	 * 访问资源
+	 */
+	@ManyToMany
+	@JoinTable(name = "gov_role_resource", joinColumns = { @JoinColumn(name = "role_id", unique = false, nullable = false, insertable = true, updatable = false) }, inverseJoinColumns = { @JoinColumn(name = "resource_id", unique = false, nullable = false, insertable = true, updatable = false) })
+	@ForeignKey(name = "fk_role_resource", inverseName = "fk_resource_role")
+	private Set<Resource> resources = new HashSet<Resource>(0);
+
 	public Role() {
 		super();
 	}
@@ -120,6 +128,14 @@ public class Role extends BaseEntity {
 
 	public void setMenus(Set<Menu> menus) {
 		this.menus = menus;
+	}
+
+	public Set<Resource> getResources() {
+		return resources;
+	}
+
+	public void setResources(Set<Resource> resources) {
+		this.resources = resources;
 	}
 
 	@Override

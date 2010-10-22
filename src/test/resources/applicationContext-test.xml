@@ -12,6 +12,7 @@
 			<list>
 				<value>classpath*:jdbc.properties</value>
 				<value>classpath*:hibernate.properties</value>
+				<value>classpath*:memcached.properties</value>
 			</list>
 		</property>
 	</bean>
@@ -20,7 +21,7 @@
 	<context:component-scan base-package="com.govsoft" />
 
 	<!-- DataSource for J2EE environments -->
-	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+	<bean id="dataSourceSpied" class="com.mchange.v2.c3p0.ComboPooledDataSource"
 		destroy-method="close">
 		<property name="driverClass" value="${jdbc.driverClass}" />
 		<property name="jdbcUrl" value="${jdbc.jdbcurl}" />
@@ -60,11 +61,25 @@
 		<property name="testConnectionOnCheckout" value="false" />
 	</bean>
 
+	<bean id="dataSource" class="net.sf.log4jdbc.Log4jdbcProxyDataSource">
+		<constructor-arg ref="dataSourceSpied" />
+		<property name="logFormatter"> 
+			<bean class="net.sf.log4jdbc.tools.Log4JdbcCustomFormatter"> 
+				<property name="loggingType" value="MULTI_LINE" /> 
+				<property name="margin" value="19" /> 
+				<property name="sqlPrefix" value="SQL:::" /> 
+			</bean> 
+		</property> 
+	</bean>
+
 	<!-- Hibernate SessionFactory definition using exposed dataSource -->
 	
 	<bean id="sessionFactory"
 		class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" /> 
+		<property name="namingStrategy">
+			<bean class="org.hibernate.cfg.ImprovedNamingStrategy" />
+		</property>
 		<property
 			name="packagesToScan"> 
 			<list> 
@@ -151,10 +166,70 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	<!-- 使用annotation定义事务 -->
-	<tx:annotation-driven transaction-manager="transactionManager" />
+	<tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true"/>
 	<!--
 			用于持有ApplicationContext,可以使用ApplicationContextHolder.getBean('xxxx')的静态方法得到spring
 			bean对象
 		-->
-	<bean class="com.govsoft.framework.common.util.SpringContextUtils" />
+	<bean class="com.govsoft.framework.common.util.SpringContextUtils"/>
+	
+	
+	<bean name="memcachedClientBuilder"
+		class="net.rubyeye.xmemcached.XMemcachedClientBuilder">
+		<constructor-arg>
+			<list>
+				<bean class="java.net.InetSocketAddress">
+					<constructor-arg>
+						<value>localhost</value>
+					</constructor-arg>
+					<constructor-arg>
+						<value>11211</value>
+					</constructor-arg>
+				</bean>
+			</list>
+		</constructor-arg>
+		<constructor-arg>
+			<list>
+				<value>1</value>
+			</list>
+		</constructor-arg>
+		<property name="connectionPoolSize" value="2"/>
+		<property name="commandFactory">
+			<bean class="net.rubyeye.xmemcached.command.TextCommandFactory"/>
+		</property>
+		<property name="sessionLocator">
+			<bean class="net.rubyeye.xmemcached.impl.KetamaMemcachedSessionLocator"/>
+		</property>
+		<property name="transcoder">
+			<bean class="net.rubyeye.xmemcached.transcoders.SerializingTranscoder" />
+		</property>
+	</bean>
+	<bean name="memcachedClient" factory-bean="memcachedClientBuilder"
+		factory-method="build" destroy-method="shutdown"/>
+
+	<!--	
+		<bean id="memcachedClient" class="net.rubyeye.xmemcached.utils.XMemcachedClientFactoryBean" destroy-method="shutdown">                
+			<property name="servers" value="${cache.servers}"/>               
+			<property name="weights">
+				<list>
+					<value>${cache.weights}</value>
+				</list>	
+			</property>
+			<property name="connectionPoolSize" value="${cache.connectionPoolSize}"/>               
+
+			<property name="commandFactory">                   
+				<bean class="net.rubyeye.xmemcached.command.BinaryCommandFactory"/>                
+			</property>                
+			<property name="sessionLocator">                        
+				<bean class="net.rubyeye.xmemcached.impl.KetamaMemcachedSessionLocator"/>                
+			</property>        
+
+			<property name="transcoder">                        
+				<bean class="net.rubyeye.xmemcached.transcoders.SerializingTranscoder" />                
+			</property>                     
+			<property name="bufferAllocator">                        
+				<bean class="net.rubyeye.xmemcached.buffer.SimpleBufferAllocator"/>                
+			</property>        
+		</bean>
+		-->
 </beans>

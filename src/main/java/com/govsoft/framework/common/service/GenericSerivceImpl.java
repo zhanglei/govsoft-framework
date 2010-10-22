@@ -1,6 +1,7 @@
 package com.govsoft.framework.common.service;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.List;
 
 import org.hibernate.criterion.DetachedCriteria;
@@ -158,6 +159,11 @@ public class GenericSerivceImpl<T, PK extends Serializable> implements
 	@Transactional
 	public void delete(final T object) {
 		delete(object);
+	}
+	
+	@Transactional
+	public void deleteAll(Collection<T> entities) {
+		deleteAll(entities);
 	}
 
 }

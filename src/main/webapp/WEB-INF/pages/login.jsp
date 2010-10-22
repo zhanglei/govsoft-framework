@@ -41,31 +41,33 @@
 	<div id="header"></div>
 	<div id="container">
 		<div id="content">
-			<form id="loginForm" name="loginForm" method="post" action="login!login.do" class="required-validate">
-				<div id="login">
-					<div>
-						<label>帐&nbsp;&nbsp;号:</label>
-						<input id="loginName" name="loginName" type="text" class="required" title="请输入账号">
-					</div>
-					<div>
-						<label>密&nbsp;&nbsp;码:</label>
-						<input id="password" name="password" type="password" class="required" title="请输入密码">
-					</div>
-					<div>
-						<label>验证码:</label>
-						<input id="validCode" name="validCode" type="text" size="5" class="required" title="请输入验证码">
-						<img id="validCodeImage" src="validateCode.do">
-						<a id="chgValidCode" name="chgValidCode" href="javascript:void(0);">换一张</a>
-					</div>
-					<div>
-						<input id="rememberPwd" name="rememberPwd" type="checkbox" value="true">记住密码
-					</div>
-					<div>
-						<input id="enterImage" name="enterImage" type="image"> 
-						<input id="resetImage" name="resetImage" type="image">
-					</div>
-				</div>
-			</form>
+			<div id="login">
+				<form id="loginForm" name="loginForm" method="post" action="${ctx}/j_spring_security_check" class="required-validate">
+					<div id="wait"></div>
+					<div id="error"></div>
+						<div>
+							<label for="loginName">帐&nbsp;&nbsp;号:</label>
+							<input id="loginName" name="j_username" type="text" class="required" title="请输入账号">
+						</div>
+						<div>
+							<label for="password">密&nbsp;&nbsp;码:</label>
+							<input id="password" name="j_password" type="password" class="required" title="请输入密码">
+						</div>
+						<div>
+							<label for="validCode">验证码:</label>
+							<input id="validCode" name="validCode" type="text" size="5" class="required" title="请输入验证码">
+							<img id="validCodeImage" src="validateCode.do">
+							<a id="chgValidCode" name="chgValidCode" href="javascript:void(0);">换一张</a>
+						</div>
+						<div>
+							<input id="rememberPwd" name="_spring_security_remeber_me" type="checkbox" value="true">记住密码
+						</div>
+						<div>
+							<input id="enterImage" name="enterImage" type="image" src="${ctx}/images/enter.gif"> 
+							<input id="resetImage" name="resetImage" type="image" src="${ctx}/images/reset.gif">
+						</div>
+				</form>
+			</div>
 		</div>
 	</div>
 	<div id="footer">

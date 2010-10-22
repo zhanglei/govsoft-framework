@@ -5,6 +5,8 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 
+import org.springframework.dao.DataAccessException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,9 +29,10 @@ public class UserServiceImpl extends GenericSerivceImpl<User, String> implements
 	}
 
 	@Transactional(readOnly = true)
-	public User loadUserByLoginName(String loginName) {
+	public User loadUserByUsername(String userName)
+			throws UsernameNotFoundException, DataAccessException {
 		User exampleInstance = new User();
-		exampleInstance.setLoginName(loginName);
+		exampleInstance.setLoginName(userName);
 		List<User> list = userDao.findByExample(exampleInstance);
 		if (!list.isEmpty()) {
 			User user = userDao.findByExample(exampleInstance).get(0);
@@ -38,4 +41,5 @@ public class UserServiceImpl extends GenericSerivceImpl<User, String> implements
 			return null;
 		}
 	}
+
 }

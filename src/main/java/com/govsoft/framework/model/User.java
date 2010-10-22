@@ -1,6 +1,7 @@
 package com.govsoft.framework.model;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
@@ -20,11 +21,15 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.ForeignKey;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.GrantedAuthorityImpl;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import com.govsoft.framework.common.hibernate.BaseEntity;
 import com.govsoft.framework.model.comparator.MenuComparator;
@@ -33,7 +38,7 @@ import com.govsoft.framework.model.comparator.MenuComparator;
 @org.hibernate.annotations.Entity(dynamicInsert = true, dynamicUpdate = true)
 @Table(name = "gov_user", uniqueConstraints = {})
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class User extends BaseEntity {
+public class User extends BaseEntity implements UserDetails {
 
 	private static final long serialVersionUID = 1L;
 
@@ -52,7 +57,7 @@ public class User extends BaseEntity {
 	/**
 	 * 密码
 	 */
-	@Column(name = "password", unique = false, nullable = false, insertable = true, updatable = true, length = 32,columnDefinition = "char(32)")
+	@Column(name = "password", unique = false, nullable = false, insertable = true, updatable = true, length = 32, columnDefinition = "char(32)")
 	private String password;
 
 	/**
@@ -100,7 +105,7 @@ public class User extends BaseEntity {
 	/**
 	 * 性别
 	 */
-	@Column(name = "gender", unique = false, nullable = false, insertable = true, updatable = true,columnDefinition = "TINYINT")
+	@Column(name = "gender", unique = false, nullable = false, insertable = true, updatable = true, columnDefinition = "TINYINT")
 	private Integer gender;
 
 	/**
@@ -115,6 +120,12 @@ public class User extends BaseEntity {
 	 */
 	@Column(name = "pic", unique = false, nullable = true, insertable = true, updatable = true, length = 50)
 	private String pic;
+
+	/**
+	 * 随机加密字符串
+	 */
+	@Column(name = "SALT", unique = false, nullable = false, insertable = true, updatable = true)
+	private Integer salt;
 
 	/**
 	 * 创建时间
@@ -295,6 +306,14 @@ public class User extends BaseEntity {
 		this.pic = pic;
 	}
 
+	public Integer getSalt() {
+		return salt;
+	}
+
+	public void setSalt(Integer salt) {
+		this.salt = salt;
+	}
+
 	public Date getCreateTime() {
 		return createTime;
 	}
@@ -445,6 +464,48 @@ public class User extends BaseEntity {
 		} else {
 			return null;
 		}
+	}
+
+	@Transient
+	public Collection<GrantedAuthority> getAuthorities() {
+		List<GrantedAuthority> grantedAuthorities = new ArrayList<GrantedAuthority>();
+		for (Role role : roles) {
+			grantedAuthorities.add(new GrantedAuthorityImpl(role.getCode()));
+		}
+		return grantedAuthorities;
+	}
+
+	@Transient
+	public String getAuthoritiesString() {
+		List<String> authorities = new ArrayList<String>();
+		for (GrantedAuthority authority : this.getAuthorities()) {
+			authorities.add(authority.getAuthority());
+		}
+		return StringUtils.join(authorities, ",");
+	}
+
+	@Transient
+	public String getUsername() {
+		return loginName;
+	}
+
+	public boolean isAccountNonExpired() {
+		return true;
+	}
+
+	@Transient
+	public boolean isAccountNonLocked() {
+		return true;
+	}
+
+	@Transient
+	public boolean isCredentialsNonExpired() {
+		return true;
+	}
+
+	@Transient
+	public boolean isEnabled() {
+		return this.disabled;
 	}
 
 }

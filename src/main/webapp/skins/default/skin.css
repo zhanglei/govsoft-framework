@@ -2,13 +2,24 @@
 *login css
 */
 #login {
-		
+	width:480px;   
+	height:330px;
+	margin-top:12%;
+	margin-left: auto;
+	margin-right: auto;
+	background:url(images/login.jpg) no-repeat;
 }
 
-#login .enter-btn {
-	background:url(images/enter.gif) no-repeat;
+#login form{
+	width: 480px; 
+	margin-left: 95px;
+	padding-top: 30%;
 }
 
-#login .reset-btn {
-	background:url(images/reset.gif) no-repeat;
+#login form div{
+	position: relative; 
+	padding-bottom: 5px; 
+	padding-left: 0px; 
+	padding-right: 0px; 
+	padding-top: 3px;
 }

@@ -1,6 +1,7 @@
 package com.govsoft.framework.common.hibernate;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.List;
 
 import org.hibernate.Criteria;
@@ -40,7 +41,6 @@ public class GenericDaoImpl<T, PK extends Serializable> extends
 	 * @param id
 	 * @return boolean
 	 */
-	@SuppressWarnings("unchecked")
 	public boolean exists(final PK id) {
 		Assert.notNull(id);
 		T entity = (T) super.getHibernateTemplate().get(this.persistentClass,
@@ -54,7 +54,6 @@ public class GenericDaoImpl<T, PK extends Serializable> extends
 	 * @param id
 	 * @return T
 	 */
-	@SuppressWarnings("unchecked")
 	public T findById(final PK id) {
 		Assert.notNull(id);
 		T entity = (T) super.getHibernateTemplate().get(this.persistentClass,
@@ -73,7 +72,6 @@ public class GenericDaoImpl<T, PK extends Serializable> extends
 	 * 
 	 * @return List<T>
 	 */
-	@SuppressWarnings("unchecked")
 	public List<T> findAll() {
 		// DetachedCriteria detachedCriteria =
 		// DetachedCriteria.forClass(getPersistentClass());
@@ -177,7 +175,6 @@ public class GenericDaoImpl<T, PK extends Serializable> extends
 	 * @param object
 	 * @return T
 	 */
-	@SuppressWarnings("unchecked")
 	public T merge(final T object) {
 		Assert.notNull(object);
 		return (T) super.getHibernateTemplate().merge(object);
@@ -220,6 +217,16 @@ public class GenericDaoImpl<T, PK extends Serializable> extends
 		super.getHibernateTemplate().delete(object);
 	}
 
+	/**
+	 * 批量删除对象
+	 * 
+	 */
+	public void deleteAll(Collection<T> entities) {
+		Assert.notNull(entities);
+		super.getHibernateTemplate().deleteAll(entities);
+	}
+
+	@SuppressWarnings("unchecked")
 	public int getCountByCriteria(final DetachedCriteria detachedCriteria) {
 		Integer count = (Integer) getHibernateTemplate()
 				.executeWithNativeSession(new HibernateCallback() {

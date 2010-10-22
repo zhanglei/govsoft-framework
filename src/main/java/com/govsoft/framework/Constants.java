@@ -4,11 +4,13 @@ public class Constants {
 
 	public static final String SERVER_NAME = "govsoft-framework";
 
-	public static final String SESSION_KEY = "";
+	public static final String SESSION_KEY = "_session_key";
 
 	public static final String COOKIES_PATH = "/";
 
 	public static final String COOKIES_DOMAIN = "";
+
+	public static final String SESSION_COOKIE_ID = "_session_cookie_id";
 
 	public static final String ATTACHED_PATH = "/attached";
 
@@ -19,5 +21,6 @@ public class Constants {
 
 	public static final String ATTACHED_PICTURE_PATH = ATTACHED_PATH
 			+ "/picture";
+
 
 }

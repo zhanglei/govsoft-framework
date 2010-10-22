@@ -53,6 +53,10 @@
 			<param-name>singleSession</param-name>
 			<param-value>false</param-value>
 		</init-param>
+		<init-param>
+			<param-name>flushMode</param-name>
+			<param-value>AUTO</param-value>
+		</init-param>
 		<!-- 你在applicationCointext*.xml中配置的SessionFactory bean的id名-->
 		<init-param>
 			<param-name>sessionFactoryBeanName</param-name>
@@ -71,11 +75,6 @@
 		<filter-class>org.apache.struts2.dispatcher.ng.filter.StrutsPrepareAndExecuteFilter</filter-class>
 	</filter>
 
-	<filter-mapping> 
-		<filter-name>springSecurityFilterChain</filter-name> 
-		<url-pattern>/*</url-pattern>
-	</filter-mapping>
-
 	<!-- Filter 映射 -->
 	<filter-mapping>
 		<filter-name>encodingFilter</filter-name>
@@ -84,6 +83,11 @@
 
 	<filter-mapping>
 		<filter-name>hibernateOpenSessionInViewFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+	<filter-mapping> 
+		<filter-name>springSecurityFilterChain</filter-name> 
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
 
@@ -138,7 +142,7 @@
 	-->
 	
 	<listener> 
-		<listener-class>org.springframework.security.ui.session.HttpSessionEventPublisher</listener-class>
+		<listener-class>org.springframework.security.web.session.HttpSessionEventPublisher</listener-class>
 	</listener>
 	
 

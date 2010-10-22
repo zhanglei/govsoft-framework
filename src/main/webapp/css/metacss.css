@@ -1,0 +1,320 @@
+
+/* 
+		Meta CSS Framework 1.0
+		http://www.fangyuqiang.com/metacss
+		SEE http://www.fangyuqiang.com/metacss for more info.	
+		@author	fangyuqiang
+		@date		2009.7.15
+ */
+ 
+/* Font  */
+.fwb {
+	font-weight: bold;
+}
+
+.fwn{
+	font-weight: normal;
+}
+
+.tdn{
+	text-decoration: none;
+}
+
+.tdu{
+	text-decoration: underline;
+}
+
+.tdl{
+	text-decoration: line-through;
+}
+
+.fs10p{
+	font-size: 10px;
+}
+
+.fs11p{
+	font-size: 11px;
+}
+
+.fs12p{
+	font-size: 12px;
+}
+
+.fs13p{
+	font-size: 13px;
+}
+
+.fs14p{
+	font-size: 14px;
+}
+
+.fs15p{
+	font-size: 15px;
+}
+
+.fs16p{
+	font-size: 16px;
+}
+
+.fs17p{
+	font-size: 17px;
+}
+
+.fs18p{
+	font-size: 18px;
+}
+
+/* you can add more font size here  */
+.c0{
+	color: #000000;
+}
+
+.c3{
+	color: #333333;
+}
+
+.c6{
+	color: #666666;
+}
+
+.c9{
+	color: #999999;
+}
+
+.cc{
+	color: #CCCCCC;
+}
+
+.cd{
+	color: #DDDDDD;
+}
+
+.ce{
+	color: #EEEEEE;
+}
+
+.cf{
+	color: #FFFFFF;
+}
+
+/* you can add more font color here  */
+/* Text  */
+.tal {
+	text-align: left;
+}
+
+.tar {
+	text-align: right;
+}
+
+.tac {
+	text-align: center;
+}
+
+.ti2e{
+	text-indent: 2em;
+}
+
+/* Background  */
+.bc0{
+	background-color: #000000;
+}
+
+.bc3{
+	background-color: #333333;
+}
+
+.bc6{
+	background-color: #666666;
+}
+
+.bc9{
+	background-color: #999999;
+}
+
+.bcc{
+	background-color: #CCCCCC;
+}
+
+.bcd{
+	background-color: #DDDDDD;
+}
+
+.bce{
+	background-color: #EEEEEE;
+}
+
+.bcf{
+	background-color: #FFFFFF;
+}
+
+/* you can add more background color here  */
+/* Position */
+.zi1{
+	z-index: 1;
+}
+
+/* you can add more z-index define here  */
+/*  Dimensions  */
+.h30p{
+	height: 30px;
+}
+
+.w300p{
+	width: 300px;
+}
+
+/* you can add more height and width define here  */
+/* Layout */
+.c:after {
+	clear: both; /* for ff or opera */
+	content: ".";
+	display: block;
+	height: 0;
+	visibility: hidden;
+}
+
+.c {
+	zoom: 1; /* for ie */
+}
+
+.fr {
+	float: right;
+}
+
+.fl {
+	float: left;
+}
+
+.oh {
+	overflow: hidden;
+}
+
+.oa{
+	overflow: auto;
+}
+
+.os{
+	overflow: scroll;
+}
+
+.dn {
+	display: none;
+}
+
+.db {
+	display: block;
+}
+
+.di{
+	display: inline;
+}
+
+/* Margins */
+.m10p{
+	margin: 10px;
+}
+
+.m10p0p{
+	margin: 10px 0;
+}
+
+.m10p20p{
+	margin: 10px 20px;
+}
+
+.m10px20px5p{
+	margin: 10px 20px 5px;
+}
+
+.mt10p{
+	margin-top: 10px;
+}
+
+.mr10p{
+	margin-right: 10px;
+}
+
+.mb10p{
+	margin-bottom: 10px;
+}
+
+.ml10p{
+	margin-left: 10px;
+}
+
+/* you can add more margin define here  */
+/* Borders */
+.b1sc{
+	border: 1px solid #CCCCCC;
+}
+
+.bt1sc{
+	border-top: 1px solid #CCCCCC;
+}
+
+.br1sc{
+	border-right: 1px solid #CCCCCC;
+}
+
+.bb1sc{
+	border-bottom: 1px solid #CCCCCC;
+}
+
+.bl1sc{
+	border-left: 1px solid #CCCCCC;
+}
+
+/* you can add more border define here  */
+/* Paddings */
+.p10p{
+	padding: 10px;
+}
+
+.p10p0p{
+	padding: 10px 0;
+}
+
+.pt0p{
+	padding-top: 0;
+}
+
+.pt10p{
+	padding-top: 10px;
+}
+
+.pr10p{
+	padding-right: 10px;
+}
+
+.pb10p{
+	padding-bottom: 10px;
+}
+
+.pl10p{
+	padding-left: 10px;
+}
+
+/* you can add more padding define here  */
+/* Other */
+.cp{
+	cursor: pointer;
+}
+
+.cm{
+	cursor: move;
+}
+
+.ct{
+	cursor: text;
+}
+
+/* you can add more  define here  */
+
+/* Combine Define */
+.fs16p-fwb{
+	font-size: 16px;
+	font-weight: bold;
+}
+
+/* you can add more combine define here  */

@@ -1,21 +1,12 @@
-DELETE
-FROM gov_user_role;
-DELETE
-FROM gov_role_menu;
-DELETE
-FROM gov_user;
-DELETE
-FROM gov_org;
-DELETE
-FROM gov_role;
-DELETE
-FROM gov_menu;
+
 TRUNCATE TABLE gov_user_role;
 TRUNCATE TABLE gov_role_menu;
+TRUNCATE TABLE gov_role_resource;
 TRUNCATE TABLE gov_user;
 TRUNCATE TABLE gov_org;
 TRUNCATE TABLE gov_role;
 TRUNCATE TABLE gov_menu;
+TRUNCATE TABLE gov_resource;
 -- table `gov_org`
 -- 
 INSERT INTO gov_org
@@ -29,7 +20,7 @@ VALUES (UUID(),
         '政创软件',
         '东莞市政创软件科技有限公司',
         NULL,
-        1,
+        0,
         NOW());
 -- 
 -- table `gov_role`
@@ -45,7 +36,7 @@ VALUES (UUID(),
         '系统管理员',
         'ROLE_ADMIN',
         '系统管理员',
-        1,
+        0,
         NOW());
 -- 
 -- table `gov_menu`
@@ -65,7 +56,7 @@ VALUES (UUID(),
         1,
         NULL,
         '系统管理',
-        1,
+        0,
         NOW());
 INSERT INTO gov_menu
             (ID,
@@ -83,7 +74,7 @@ SELECT
   1,
   id,
   '菜单管理',
-  1,
+  0,
   NOW()
 FROM gov_menu m WHERE m.name='系统管理';
 INSERT INTO gov_menu
@@ -102,7 +93,7 @@ SELECT
   2,
   id,
   '角色管理',
-  1,
+  0,
   NOW()
 FROM gov_menu m WHERE m.name='系统管理';
 INSERT INTO gov_menu
@@ -121,7 +112,7 @@ SELECT
   3,
   id,
   '组织机构管理',
-  1,
+  0,
   NOW()
 FROM gov_menu m WHERE m.name='系统管理';
 INSERT INTO gov_menu
@@ -140,7 +131,7 @@ SELECT
   4,
   id,
   '用户管理',
-  1,
+  0,
   NOW()
 FROM gov_menu m WHERE m.name='系统管理';
 -- 
@@ -189,7 +180,7 @@ SELECT
   '',
   '',
   '',
-  1,
+  0,
   id,
   NOW()
 FROM gov_org
@@ -260,3 +251,25 @@ FROM gov_role r,
   gov_menu m
 WHERE r.NAME = '系统管理员'
     AND m.NAME = '用户管理';
+
+INSERT INTO gov_resource
+            (ID,
+             TYPE,
+             VALUE,
+             DESCRIPTION,
+             VERSION)
+VALUES (UUID(),
+        'url',
+        '/*',
+        'url访问',
+        NOW());
+INSERT INTO gov_role_resource
+            (ROLE_ID,
+             RESOURCE_ID)
+SELECT
+  r.id,
+  rs.id
+FROM gov_role r,
+  gov_resource rs
+WHERE r.NAME = '系统管理员'
+    AND rs.type = 'url';

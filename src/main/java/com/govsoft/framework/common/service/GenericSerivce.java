@@ -1,6 +1,7 @@
 package com.govsoft.framework.common.service;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.List;
 
 import org.hibernate.criterion.DetachedCriteria;
@@ -104,4 +105,11 @@ public interface GenericSerivce<T, PK extends Serializable> {
 	 */
 	void delete(final T object);
 
+	/**
+	 * 批量
+	 * 
+	 * @param entities
+	 */
+	void deleteAll(final Collection<T> entities);
+	
 }
