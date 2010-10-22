@@ -80,7 +80,7 @@ public class LoginAction extends ActionSupport implements ModelDriven<User>,
 			/* 自动登录 */
 			Cookie[] cookies = getRequest().getCookies();
 			if (cookies != null && cookies.length >= 3) {
-				User user = userService.loadUserByLoginName(cookies[0]
+				User user = userService.loadUserByUsername(cookies[0]
 						.getValue());
 				if (user != null
 						&& StringUtils.equals(user.getPassword(), cookies[1]
@@ -107,7 +107,7 @@ public class LoginAction extends ActionSupport implements ModelDriven<User>,
 			return "login";
 		}
 		String passwordMd5 = DigestUtils.md5Hex(password);
-		User user = (User) userService.loadUserByLoginName(loginName);
+		User user = (User) userService.loadUserByUsername(loginName);
 		if (null == user) {
 			logger.info("帐号错误");
 			addActionError("帐号错误");

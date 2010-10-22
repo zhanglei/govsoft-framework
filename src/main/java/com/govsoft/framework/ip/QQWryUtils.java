@@ -103,7 +103,7 @@ public class QQWryUtils {
 	
 	public static void main(String[] args) {
 		IPSeeker seeker = IPSeeker.getInstance();
-		String ip ="58.251.95.16";
+		String ip ="183.16.45.132";
         System.out.println(seeker.getArea(ip));
         System.out.println(seeker.getCountry(ip));
 

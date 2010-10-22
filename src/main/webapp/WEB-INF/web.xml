@@ -53,11 +53,21 @@
 			<param-name>singleSession</param-name>
 			<param-value>false</param-value>
 		</init-param>
+		<init-param>
+			<param-name>flushMode</param-name>
+			<param-value>AUTO</param-value>
+		</init-param>
 		<!-- 你在applicationCointext*.xml中配置的SessionFactory bean的id名-->
 		<init-param>
 			<param-name>sessionFactoryBeanName</param-name>
 			<param-value>sessionFactory</param-value>
 		</init-param>
+	</filter>
+
+	<!-- UrlRewrite filter -->
+	<filter>
+		<filter-name>urlRewriteFilter</filter-name>
+		<filter-class>org.tuckey.web.filters.urlrewrite.UrlRewriteFilter</filter-class>
 	</filter>
 
 	<!-- Struts2 filter -->
@@ -71,11 +81,6 @@
 		<filter-class>org.apache.struts2.dispatcher.ng.filter.StrutsPrepareAndExecuteFilter</filter-class>
 	</filter>
 
-	<filter-mapping> 
-		<filter-name>springSecurityFilterChain</filter-name> 
-		<url-pattern>/*</url-pattern>
-	</filter-mapping>
-
 	<!-- Filter 映射 -->
 	<filter-mapping>
 		<filter-name>encodingFilter</filter-name>
@@ -84,6 +89,11 @@
 
 	<filter-mapping>
 		<filter-name>hibernateOpenSessionInViewFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+	<filter-mapping> 
+		<filter-name>springSecurityFilterChain</filter-name> 
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
 
@@ -103,6 +113,14 @@
 		<filter-name>gzipFilter</filter-name>
 		<url-pattern>*.jsp</url-pattern>
 	</filter-mapping>
+
+	<filter-mapping>
+		<filter-name>urlRewriteFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+		<dispatcher>REQUEST</dispatcher>
+		<dispatcher>FORWARD</dispatcher>
+	</filter-mapping>
+
 	<filter-mapping>
 		<filter-name>struts2CleanupFilter</filter-name>
 		<url-pattern>*.do</url-pattern>
@@ -138,7 +156,7 @@
 	-->
 	
 	<listener> 
-		<listener-class>org.springframework.security.ui.session.HttpSessionEventPublisher</listener-class>
+		<listener-class>org.springframework.security.web.session.HttpSessionEventPublisher</listener-class>
 	</listener>
 	
 

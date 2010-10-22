@@ -1,5 +1,8 @@
 package com.govsoft.framework;
 
+import javax.annotation.Resource;
+import javax.sql.DataSource;
+
 import org.hibernate.SessionFactory;
 import org.junit.Assert;
 import org.junit.Test;
@@ -10,6 +13,12 @@ import org.springframework.test.context.junit4.AbstractTransactionalJUnit4Spring
 public class SpringTxTestCase extends
 		AbstractTransactionalJUnit4SpringContextTests {
 
+	@Resource(name = "dataSource")
+	private DataSource dataSource;
+
+	@Resource(name = "sessionFactory")
+	private SessionFactory sessionFactory;
+
 	/**
 	 * 刷新sessionFactory,强制Hibernate执行SQL以验证ORM配置.
 	 * 
@@ -18,7 +27,8 @@ public class SpringTxTestCase extends
 	 * @see #flush(String)
 	 */
 	protected void flush() {
-		flush("sessionFactory");
+		// flush("sessionFactory");
+		sessionFactory.getCurrentSession().flush();
 	}
 
 	/**
@@ -27,10 +37,10 @@ public class SpringTxTestCase extends
 	 * @param sessionFactoryName
 	 *            applicationContext中sessionFactory的名称.
 	 */
-	protected void flush(final String sessionFactoryName) {
-		((SessionFactory) applicationContext.getBean(sessionFactoryName))
-				.getCurrentSession().flush();
-	}
+	// protected void flush(final String sessionFactoryName) {
+	// ((SessionFactory) applicationContext.getBean(sessionFactoryName))
+	// .getCurrentSession().flush();
+	// }
 
 	/**
 	 * 将对象从session中消除, 用于测试初对象的始化情况.
@@ -38,26 +48,28 @@ public class SpringTxTestCase extends
 	 * sessionFactory名默认为"sessionFactory".
 	 */
 	protected void evict(Object entity) {
-		evict(entity, "sessionFactory");
+		// evict(entity, "sessionFactory");
+		sessionFactory.getCurrentSession().evict(entity);
 	}
 
 	/**
 	 * 将对象从session中消除, 用于测试初对象的始化情况.
 	 * 
 	 */
-	protected void evict(final Object entity, final String sessionFactoryName) {
-		((SessionFactory) applicationContext.getBean(sessionFactoryName))
-				.getCurrentSession().evict(entity);
-	}
+	// protected void evict(final Object entity, final String
+	// sessionFactoryName) {
+	// ((SessionFactory) applicationContext.getBean(sessionFactoryName))
+	// .getCurrentSession().evict(entity);
+	// }
 
 	@Test
 	public void dataSource() {
-		Assert.assertNotNull(applicationContext.getBean("dataSource"));
+		Assert.assertNotNull(dataSource);
 	}
 
 	@Test
 	public void sessionFactory() {
-		Assert.assertNotNull(applicationContext.getBean("sessionFactory"));
+		Assert.assertNotNull(sessionFactory);
 	}
 
 }

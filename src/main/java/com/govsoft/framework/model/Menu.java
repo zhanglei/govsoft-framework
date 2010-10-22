@@ -54,7 +54,7 @@ public class Menu extends BaseEntity {
 	 * 所属父菜单
 	 */
 	@ManyToOne(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY, targetEntity = Menu.class, optional = false)
-	@JoinColumn(name = "parent_id", unique = false, nullable = true, insertable = true, updatable = true, columnDefinition = "char(32)")
+	@JoinColumn(name = "parent_id", unique = false, nullable = true, insertable = true, updatable = true, columnDefinition = "char(36)")
 	@ForeignKey(name = "fk_menu")
 	private Menu parent;
 

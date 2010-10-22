@@ -5,4 +5,4 @@
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
 <c:set var="suffix" value="" />
 <c:set var="gzip" value="" />
-<c:set var="skins" value="${ctx}/skins/default/" />
+<c:set var="skins" value="${ctx}/skins/default" />

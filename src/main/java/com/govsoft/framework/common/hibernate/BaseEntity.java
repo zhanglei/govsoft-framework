@@ -37,7 +37,7 @@ public abstract class BaseEntity implements java.io.Serializable {
 	@Id
 	@GeneratedValue(generator = "system-uuid")
 	@GenericGenerator(name = "system-uuid", strategy = "uuid")
-	@Column(name = "id", unique = true, nullable = false, insertable = true, updatable = true, length = 32, columnDefinition = "char(32)")
+	@Column(name = "id", unique = true, nullable = false, insertable = true, updatable = true, length = 36, columnDefinition = "char(36)")
 	private String id;
 
 	/**

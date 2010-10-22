@@ -45,7 +45,7 @@ public class Org extends BaseEntity {
 	 * 所属父机构
 	 */
 	@ManyToOne(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY, targetEntity = Org.class, optional = false)
-	@JoinColumn(name = "parent_id", unique = false, nullable = true, insertable = true, updatable = true, columnDefinition = "char(32)")
+	@JoinColumn(name = "parent_id", unique = false, nullable = true, insertable = true, updatable = true, columnDefinition = "char(36)")
 	@ForeignKey(name = "fk_org")
 	private Org parent;
 
