@@ -505,7 +505,7 @@ public class User extends BaseEntity implements UserDetails {
 
 	@Transient
 	public boolean isEnabled() {
-		return this.disabled;
+		return !this.disabled;
 	}
 
 }

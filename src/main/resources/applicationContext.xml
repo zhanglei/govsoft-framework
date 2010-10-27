@@ -173,7 +173,7 @@
 		-->
 	<bean class="com.govsoft.framework.common.util.SpringContextUtils"/>
 	
-	<bean id="solrServerFactory" class="org.springside.modules.solr.SolrServerFactoryBean">
+	<bean id="solrServerFactory" class="com.govsoft.framework.solr.SolrServerFactoryBean">
 		<property name="serverUrl" value="http://localhost:8983/solr" />
 	</bean>
 	

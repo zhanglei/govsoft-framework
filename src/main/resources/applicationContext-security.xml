@@ -17,13 +17,16 @@
 		<s:intercept-url pattern="/skins/**" filters="none" />
 		<s:intercept-url pattern="/tools/**" filters="none" />
 		<s:intercept-url pattern="/widgets/**" filters="none" />
-		<s:intercept-url pattern="/" filters="none" />
-		<s:intercept-url pattern="/index.jsp" filters="none" />
-		<s:intercept-url pattern="/login.do" filters="none" />
+		<s:intercept-url pattern="/index.jsp" access="permitAll" />
+		<s:intercept-url pattern="/validateCode.do" access="permitAll" />
+		<s:intercept-url pattern="/login.do" access="permitAll" />
+		<s:intercept-url pattern="/" access="permitAll" />
+		<s:intercept-url pattern="/**" access="isAuthenticated()" />
+		
 		<!--
-		<s:form-login login-page="/login.do" authentication-failure-url="/login.do?error=true"
-			default-target-url="/login!login.do" always-use-default-target="true"/>
-		-->
+			<s:form-login login-page="/login.do" authentication-failure-url="/login.do?error=true"
+				default-target-url="/login!login.do" always-use-default-target="true"/>
+			-->
 		<s:custom-filter ref="validateCodeAuthenticationFilter"
 			position="FORM_LOGIN_FILTER" />
 		<s:logout logout-success-url="/login.do" />

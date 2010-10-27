@@ -601,6 +601,18 @@
 			<version>3.0.2</version>
 		</dependency>
 		
+		<dependency>
+			<groupId>net.sf.dozer</groupId>
+			<artifactId>dozer</artifactId>
+			<version>5.3.0</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>r07</version>
+		</dependency>
+		
 	</dependencies>
 	<properties>
 		<spring.version>3.0.4.RELEASE</spring.version>

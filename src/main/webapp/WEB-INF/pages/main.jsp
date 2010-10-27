@@ -42,9 +42,42 @@
 </head>
 <body>
 <div id="page">
-	<div id="header"></div>
+	<div id="header">
+		<div id="topside">
+			<table width="100%" border="0" cellpadding="0" cellspacing="0" background="${ctx}/images/top_bg.jpg">
+				<tr>
+					<td><img src="${ctx}/images/logo.jpg"></td>
+					<td>
+						<table width="100%" border="0" align="left" cellpadding="0" cellspacing="5">
+							<tr>
+								<td valign="bottom">
+									<div align="right">
+										<a href="#" target="right"><font color="#3D3E3E">首页</font></a>&nbsp;| 
+										<a href="#" target="right"><font color="#3D3E3E">个人信息</font></a>&nbsp;| 
+										<a href="javascript:logout()"><font color="#3D3E3E">退出系统</font></a>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td valign="top">
+								<div align="right">
+									您好, <font color="#296DC1">${user.name}</font>
+									部门: <font color="#296DC1">${user.org.name}</font>
+								</div>
+								</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+			</table>
+		</div>
+	</div>
 	<div id="container">
 		<div id="content">
+			<div id="leftside">
+			</div>
+			<div id="rightside">
+			</div>
 		</div>
 	</div>
 	<div id="footer">

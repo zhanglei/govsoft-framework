@@ -19,8 +19,8 @@ public class ValidateCodeUsernamePasswordAuthenticationFilter extends
 	private boolean allowEmptyValidateCode = false;
 	private String sessionvalidateCodeField = DEFAULT_SESSION_VALIDATE_CODE_FIELD;
 	private String validateCodeParameter = DEFAULT_VALIDATE_CODE_PARAMETER;
-	public static final String DEFAULT_SESSION_VALIDATE_CODE_FIELD = "validateCode";
-	public static final String DEFAULT_VALIDATE_CODE_PARAMETER = "validateCode";
+	public static final String DEFAULT_SESSION_VALIDATE_CODE_FIELD = "validCode";
+	public static final String DEFAULT_VALIDATE_CODE_PARAMETER = "validCode";
 
 	@Override
 	public Authentication attemptAuthentication(HttpServletRequest request,

@@ -164,7 +164,7 @@ SELECT
   UUID(),
   'ADMIN',
   '系统管理员',
-  '202cb962ac59075b964b07152d234b70',
+  '5b73d356cb33728f420490b429bf88cb',
   'A001',
   'admin@govsoft.net',
   '0769-222222',

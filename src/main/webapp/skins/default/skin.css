@@ -23,3 +23,22 @@
 	padding-right: 0px; 
 	padding-top: 3px;
 }
+
+/**
+*main css
+*/
+#topside{
+	
+}
+
+#leftside{
+	float: left;
+}
+
+#rightside{
+	float: right;
+}
+
+#load {
+	color:#BEBEBE;
+}
