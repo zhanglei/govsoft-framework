@@ -60,7 +60,7 @@
 							<a id="chgValidCode" name="chgValidCode" href="javascript:void(0);">换一张</a>
 						</div>
 						<div>
-							<input id="rememberPwd" name="_spring_security_remeber_me" type="checkbox" value="true">记住密码
+							<input id="rememberPwd" name="_spring_security_remeber_me" type="checkbox">记住密码
 						</div>
 						<div>
 							<input id="enterImage" name="enterImage" type="image" src="${ctx}/images/enter.gif"> 

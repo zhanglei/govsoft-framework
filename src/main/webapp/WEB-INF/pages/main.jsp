@@ -34,7 +34,7 @@
 	function logout() {//注销
 		$j.messager.confirm('注销', '确定要退出系统吗?', function(r) {
 			if (r) {
-				location.href = "logout!logout.do";
+				location.href = "${ctx}/j_spring_security_logout";
 			}
 		});
 	}
@@ -61,8 +61,7 @@
 							<tr>
 								<td valign="top">
 								<div align="right">
-									您好, <font color="#296DC1">${user.name}</font>
-									部门: <font color="#296DC1">${user.org.name}</font>
+									您好, <font color="#296DC1"><sec:authentication property="principal.realName"/></font>
 								</div>
 								</td>
 							</tr>

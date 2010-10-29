@@ -8,7 +8,7 @@
 	<description>使用SpringSecurity的安全配置文件</description>
 	<s:global-method-security pre-post-annotations="enabled" access-decision-manager-ref="accessDecisionManager">
 	</s:global-method-security>
-	<s:http use-expressions="true" entry-point-ref="authenticationProcessingFilterEntryPoint" access-denied-page="/commons/403.jsp">
+	<s:http use-expressions="true" entry-point-ref="authenticationEntryPoint" access-denied-page="/commons/403.jsp">
 		<s:intercept-url pattern="/commons/**" filters="none" />
 		<s:intercept-url pattern="/css/**" filters="none" />
 		<s:intercept-url pattern="/images/**" filters="none" />
@@ -22,34 +22,39 @@
 		<s:intercept-url pattern="/login.do" access="permitAll" />
 		<s:intercept-url pattern="/" access="permitAll" />
 		<s:intercept-url pattern="/**" access="isAuthenticated()" />
-		
+		<s:remember-me services-ref="rememberMeServices" />
+		<s:logout logout-success-url="/login.do" />
 		<!--
 			<s:form-login login-page="/login.do" authentication-failure-url="/login.do?error=true"
 				default-target-url="/login!login.do" always-use-default-target="true"/>
 			-->
-		<s:custom-filter ref="validateCodeAuthenticationFilter"
+		<s:custom-filter ref="authenticationFilter"
 			position="FORM_LOGIN_FILTER" />
-		<s:logout logout-success-url="/login.do" />
-		<s:session-management>
-			<s:concurrency-control max-sessions="1" error-if-maximum-exceeded="true" />
-		</s:session-management>
+		<!--	
+				<s:custom-filter ref="filterSecurityInterceptor" after="FILTER_SECURITY_INTERCEPTOR"/>
+			-->	
+		<!-- 限制用户的最大登陆数,防止一个账号被多人使用 -->
+		<s:custom-filter ref="concurrencyFilter" position="CONCURRENT_SESSION_FILTER" />	
+		<s:session-management session-authentication-strategy-ref="sas"/>
 	</s:http>
-	<bean id="validateCodeAuthenticationFilter" class="com.govsoft.framework.security.web.authentication.ValidateCodeUsernamePasswordAuthenticationFilter">
+	<bean id="authenticationFilter" class="com.govsoft.framework.security.web.authentication.ValidateCodeUsernamePasswordAuthenticationFilter">
 		<property name="filterProcessesUrl" value="/j_spring_security_check"/>
 		<property name="authenticationSuccessHandler" ref="savedRequestAwareAuthenticationSuccessHandler"/>
 		<property name="authenticationFailureHandler" ref="simpleUrlAuthenticationFailureHandler"/>
 		<property name="authenticationManager" ref="authenticationManager"/>
+		<property name="sessionAuthenticationStrategy" ref="sas"/>
+		<property name="rememberMeServices" ref="rememberMeServices"/>
 	</bean>
 	<bean id="savedRequestAwareAuthenticationSuccessHandler"
-		class="org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler">
+		class="com.govsoft.framework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler">
 		<property name="defaultTargetUrl" value="/main.do"/>
 	</bean>
 	<bean id="simpleUrlAuthenticationFailureHandler"
 		class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler">
-		<property name="defaultFailureUrl" value="/login.do"/>
+		<property name="defaultFailureUrl" value="/login.do?error=true"/>
 	</bean>
-	<bean id="authenticationProcessingFilterEntryPoint"
-		class="org.springframework.security.web.authentication.AuthenticationProcessingFilterEntryPoint">
+	<bean id="authenticationEntryPoint"
+		class="org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint">
 		<property name="loginFormUrl" value="/login.do"/>
 	</bean>
 	<s:authentication-manager alias="authenticationManager">
@@ -58,7 +63,38 @@
 				<s:salt-source user-property="salt"/>
 			</s:password-encoder>
 		</s:authentication-provider>
+		<s:authentication-provider ref="rememberMeAuthenticationProvider">
+			<s:password-encoder hash="md5">
+				<s:salt-source user-property="salt"/>
+			</s:password-encoder>
+		</s:authentication-provider>
 	</s:authentication-manager>
+	<!--
+		<bean id="rememberMeFilter" class="org.springframework.security.web.authentication.rememberme.RememberMeAuthenticationFilter">
+			<property name="rememberMeServices" ref="rememberMeServices"/>
+			<property name="authenticationManager" ref="authenticationManager" />
+		</bean>
+		-->
+	<bean id="rememberMeServices" class="org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices">
+		<property name="userDetailsService" ref="userService"/>
+		<property name="key" value="springRocks"/>
+		<property name="alwaysRemember" value="false"/>
+		<property name="tokenValiditySeconds" value="86400"/>
+		<property name="parameter" value="_spring_security_remember_me"/>
+	</bean>
+	<bean id="rememberMeAuthenticationProvider" class="org.springframework.security.authentication.RememberMeAuthenticationProvider">
+		<property name="key" value="springRocks"/>
+	</bean>
+	<bean id="concurrencyFilter" class="org.springframework.security.web.session.ConcurrentSessionFilter">
+		<property name="sessionRegistry" ref="sessionRegistry"/>
+		<property name="expiredUrl" value="/login.do"/>
+	</bean>
+	<bean id="sas" class="org.springframework.security.web.authentication.session.ConcurrentSessionControlStrategy">
+		<constructor-arg name="sessionRegistry" ref="sessionRegistry"/>
+		<property name="maximumSessions" value="1"/>
+		<property name="exceptionIfMaximumExceeded" value="true"/>
+	</bean>
+	<bean id="sessionRegistry" class="org.springframework.security.core.session.SessionRegistryImpl"></bean>
 	<bean id="accessDecisionManager" class="org.springframework.security.access.vote.AffirmativeBased">
 		<property name="allowIfAllAbstainDecisions" value="false"/>
 		<property name="decisionVoters">
@@ -68,5 +104,13 @@
 			</list>
 		</property>
 	</bean>
-
+	<!--
+		<bean id="filterSecurityInterceptor" class="org.springframework.security.web.access.intercept.FilterSecurityInterceptor">
+			<property name="authenticationManager" ref="authenticationManager"/>
+			<property name="accessDecisionManager" ref="accessDecisionManager"/>
+			<property name="securityMetadataSource" ref="securityMetadataSource"/>
+			<property name="observeOncePerRequest" value="false"/>
+		</bean>
+		<bean id="securityMetadataSource" class="com.govsoft.framework.security.web.access.intercept.SecureResourceFilterInvocationSecurityMetadataSource"></bean>
+		-->
 </beans>
