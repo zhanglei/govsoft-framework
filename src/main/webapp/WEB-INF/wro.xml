@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<groups xmlns="http://www.isdc.ro/wro"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.isdc.ro/wro wro.xsd">
+	<group name="all">
+		<group-ref>global</group-ref>
+		<group-ref>core</group-ref>
+		<group-ref>main</group-ref>
+		<!--
+		<group-ref>widgets</group-ref>
+		-->
+	</group>
+	<group name="global">
+		<js>/js/json2.js</js>
+		<js>/js/prototype-1.6.1.js</js>
+		<js>/js/jquery-1.4.3.js</js>
+	    <css>/css/global.css</css>
+	    <css>/css/reset.css</css>
+	</group>
+	<group name="core">
+		<js>/js/jquery.form.js</js>  
+	</group>
+	<group name="main">
+		<css>/skins/default/skin.css</css>
+	</group>
+	<!--
+	<group name="widgets">
+		<group-ref>calendar</group-ref>
+		<group-ref>kindeditor</group-ref>
+	</group>
+	<group name="calendar">
+		<js>/widgets/calendar/**.js</js>  
+	    <css>/widgets/calendar/**.css</css>
+	</group>	
+	<group name="kindeditor">
+		<js>/widgets/kindeditor/**.js</js>  
+	    <css>/widgets/kindeditor/**.css</css>
+	</group>
+	-->
+</groups>

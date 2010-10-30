@@ -235,4 +235,11 @@
 			</property>        
 		</bean>
 		-->
+	<bean id="wroFilter" class="ro.isdc.wro.http.ConfigurableWroFilter">
+		<property name="debug" value="true"/>
+		<property name="gzipEnabled" value="true"/>
+		<property name="jmxEnabled" value="true"/>		
+		<property name="cacheUpdatePeriod" value="60"/>
+		<property name="modelUpdatePeriod" value="600"/>
+	</bean>
 </beans>
