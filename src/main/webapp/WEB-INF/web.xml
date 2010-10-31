@@ -39,11 +39,20 @@
 			<param-value>true</param-value>
 		</init-param>
 	</filter>
-	
+
 	<filter>
-		<filter-name>gzipFilter</filter-name>
-		<filter-class>net.sf.ehcache.constructs.web.filter.GzipFilter</filter-class>
+		<filter-name>simplePageCachingFilter</filter-name>
+		<filter-class>net.sf.ehcache.constructs.web.filter.SimplePageCachingFilter</filter-class>
+		<init-param>
+			<param-name>suppressStackTraces</param-name>
+			<param-value>false</param-value>
+		</init-param>
+		<init-param>
+			<param-name>cacheName</param-name>
+			<param-value>simplePageCachingFilter</param-value>
+		</init-param>
 	</filter>
+
 	<!-- Hibernate Open Session In View filter-->
 	<filter>
 		<filter-name>hibernateOpenSessionInViewFilter</filter-name>
@@ -69,7 +78,7 @@
 		<filter-name>urlRewriteFilter</filter-name>
 		<filter-class>org.tuckey.web.filters.urlrewrite.UrlRewriteFilter</filter-class>
 	</filter>
-
+	
 	<filter>
 		<filter-name>WebResourceOptimizer</filter-name>
 		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
@@ -109,31 +118,29 @@
 		<filter-name>springSecurityFilterChain</filter-name> 
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
-
+	
 	<filter-mapping>
-		<filter-name>gzipFilter</filter-name>
-		<url-pattern>*.css</url-pattern>
-	</filter-mapping>
-	<filter-mapping>
-		<filter-name>gzipFilter</filter-name>
-		<url-pattern>*.html</url-pattern>
-	</filter-mapping>
-	<filter-mapping>
-		<filter-name>gzipFilter</filter-name>
-		<url-pattern>*.js</url-pattern>
-	</filter-mapping>
-	<filter-mapping>
-		<filter-name>gzipFilter</filter-name>
+		<filter-name>simplePageCachingFilter</filter-name>
 		<url-pattern>*.jsp</url-pattern>
+		<dispatcher>REQUEST</dispatcher>
+		<dispatcher>INCLUDE</dispatcher>
+		<dispatcher>FORWARD</dispatcher>
 	</filter-mapping>
-
+	<filter-mapping>
+		<filter-name>simplePageCachingFilter</filter-name>
+		<url-pattern>*.html</url-pattern>
+		<dispatcher>REQUEST</dispatcher>
+		<dispatcher>INCLUDE</dispatcher>
+		<dispatcher>FORWARD</dispatcher>
+	</filter-mapping>
+		
 	<filter-mapping>
 		<filter-name>urlRewriteFilter</filter-name>
 		<url-pattern>/*</url-pattern>
 		<dispatcher>REQUEST</dispatcher>
 		<dispatcher>FORWARD</dispatcher>
 	</filter-mapping>
-
+	
 	<filter-mapping>
 		<filter-name>WebResourceOptimizer</filter-name>
 		<url-pattern>/wro/*</url-pattern>
@@ -169,9 +176,9 @@
 	</listener>
 
 	<!--
-		The HttpSessionEventPublisher will publish HttpSessionCreatedEvent and HttpSessionDestroyedEvent to the
-		WebApplicationContext
-	-->
+			The HttpSessionEventPublisher will publish HttpSessionCreatedEvent and HttpSessionDestroyedEvent to the
+			WebApplicationContext
+		-->
 	
 	<listener> 
 		<listener-class>org.springframework.security.web.session.HttpSessionEventPublisher</listener-class>

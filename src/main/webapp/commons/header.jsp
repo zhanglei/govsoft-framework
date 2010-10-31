@@ -1,11 +1,5 @@
-<link rel="stylesheet" type="text/css" href="${ctx}/css/reset${suffix}.css${gzip}" />
-<link rel="stylesheet" type="text/css" href="${ctx}/css/global${suffix}.css${gzip}" />
-<link rel="stylesheet" type="text/css" href="${ctx}/css/metacss${suffix}.css${gzip}" />
-<link rel="stylesheet" type="text/css" href="${skins}/skin${suffix}.css${gzip}" />
-<script src="${ctx}/js/json2${suffix}.js${gzip}" type="text/javascript" charset="utf-8"></script>
-<script src="${ctx}/js/prototype-1.6.1${suffix}.js${gzip}" type="text/javascript" charset="utf-8"></script>
-<script src="${ctx}/js/jquery-1.4.3${suffix}.js${gzip}" type="text/javascript" charset="utf-8"></script>
-<script src="${ctx}/js/jquery.lint${suffix}.js${gzip}" type="text/javascript" charset="utf-8"></script>
-<script type="text/javascript" charset="utf-8">
-var $j = jQuery.noConflict();
-</script>	
+<link rel="stylesheet" type="text/css" href="${ctx}/wro/global.css" />
+<link rel="stylesheet" type="text/css" href="${ctx}/wro/main.css" />
+<script src="${ctx}/wro/global.js" type="text/javascript" charset="utf-8"></script>
+<script src="${ctx}/wro/main.js" type="text/javascript" charset="utf-8"></script>
+<script src="${ctx}/wro/core.js" type="text/javascript" charset="utf-8"></script>

@@ -18,9 +18,10 @@
 	    <css>/css/reset.css</css>
 	</group>
 	<group name="core">
-		<js>/js/jquery.form.js</js>  
+		<js>/js/core.js</js>  
 	</group>
 	<group name="main">
+		<js>/js/jquery.form.js</js>  
 		<css>/skins/default/skin.css</css>
 	</group>
 	<!--
