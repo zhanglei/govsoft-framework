@@ -1,7 +1,5 @@
 package com.govsoft.framework.service.impl;
 
-import java.util.List;
-
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 
@@ -31,15 +29,16 @@ public class UserServiceImpl extends GenericSerivceImpl<User, String> implements
 	@Transactional(readOnly = true)
 	public User loadUserByUsername(String userName)
 			throws UsernameNotFoundException, DataAccessException {
-		User exampleInstance = new User();
-		exampleInstance.setLoginName(userName);
-		List<User> list = userDao.findByExample(exampleInstance);
-		if (!list.isEmpty()) {
-			User user = userDao.findByExample(exampleInstance).get(0);
-			return user;
-		} else {
-			return null;
-		}
+		// User exampleInstance = new User();
+		// exampleInstance.setLoginName(userName);
+		// List<User> list = userDao.findByExample(exampleInstance);
+		// if (!list.isEmpty()) {
+		// User user = userDao.findByExample(exampleInstance).get(0);
+		// return user;
+		// } else {
+		// return null;
+		// }
+		return userDao.findByUnique("loginName", userName);
 	}
 
 }

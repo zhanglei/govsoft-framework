@@ -2,43 +2,95 @@
 *login css
 */
 #login {
-	width:480px;   
-	height:330px;
-	margin-top:12%;
+	width: 480px;
+	height: 330px;
+	margin-top: 12%;
 	margin-left: auto;
 	margin-right: auto;
-	background:url(images/login.jpg) no-repeat;
+	background: url(images/login.jpg) no-repeat;
 }
 
-#login form{
-	width: 480px; 
+#login form {
+	width: 480px;
 	margin-left: 95px;
 	padding-top: 30%;
 }
 
-#login form div{
-	position: relative; 
-	padding-bottom: 5px; 
-	padding-left: 0px; 
-	padding-right: 0px; 
+#login form div {
+	position: relative;
+	padding-bottom: 5px;
+	padding-left: 0px;
+	padding-right: 0px;
 	padding-top: 3px;
 }
 
 /**
 *main css
 */
-#topside{
+#topside {
 	
 }
 
-#leftside{
+#headerlogo {
 	float: left;
+	height: 90px;
+	width:35%;
 }
-
-#rightside{
+#headerleft {
+	height: 90px;
+	background: url(images/top_bg.jpg);
+}
+#topmenu {
 	float: right;
 }
 
-#load {
-	color:#BEBEBE;
+#topmenu ul {
+	padding-bottom: 0px;
+	list-style-type: none;
+	margin: 50px;
+	margin-right: 30px;
+	padding-left: 0px;
+	padding-right: 0px;
+	padding-top: 0px;
 }
+
+#topmenu ul li {
+	border-left: #fff 1px solid;
+	padding-bottom: 0px;
+	padding-left: 0px;
+	padding-right: 3px;
+	padding-top: 0px;
+	float: left;
+}
+
+#topmenu a:visited {
+	color: #3D3E3E;
+	text-decoration: none;
+}
+
+#topmenu a:link {
+	color: #3D3E3E;
+	text-decoration: none;
+}
+
+#topmenu a:hover {
+	
+}
+
+#headerinfo {
+	margin: 70px;
+	margin-right: 30px;
+}
+
+#leftside {
+	float: left;
+	width:30%;
+	height:85%;
+}
+
+#rightside {
+	float: right;
+	width:70%;
+	height:85%;
+}
+

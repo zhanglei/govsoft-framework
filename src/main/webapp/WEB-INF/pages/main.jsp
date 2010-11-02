@@ -9,6 +9,7 @@
 <title>GovSoft系统</title>
 <%@ include file="/commons/header.jsp"%>
 <%@ include file="/widgets/jquery-ui/messager/messager.jsp"%>
+<script src="${ctx}/wro/util.js" type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript" charset="utf-8">
 	$j(document).ready(function() {
 		$j('#logout').click(logout);
@@ -16,11 +17,15 @@
 	});
 
 	function showMessager() {//显示系统消息
-		var msg = '欢迎您,${user.realName}!<br>';
-		msg += '您是第${user.loginCount+1}登录本系统.<br>';
-		msg += '上次登录时间:${user.lastLoginTime}<br>';
-		msg += '上次登录IP:${user.lastLoginIp}<br>';
-		msg += '上次登录地点:${lastLoginCountry}';
+		var loginCount = parseInt('<sec:authentication property="principal.loginCount"/>') + 1;
+		var lastLoginTime = '<sec:authentication property="principal.lastLoginTime"/>';
+		var lastLoginIp = '<sec:authentication property="principal.lastLoginIp"/>';
+		var msg = '欢迎您,<sec:authentication property="principal.realName"/>!<br>';
+		var lastLoginCountry = '';
+		msg += '您是第' + loginCount + '登录本系统.<br>';
+		msg += '上次登录时间:' + lastLoginTime + '<br>';
+		msg += '上次登录IP:' + lastLoginIp + '<br>';
+		msg += '上次登录地点:' + lastLoginCountry + '.';
 
 		$j.messager.show( {
 			title : '系统消息',
@@ -44,43 +49,33 @@
 <div id="page">
 	<div id="header">
 		<div id="topside">
-			<table width="100%" border="0" cellpadding="0" cellspacing="0" background="${ctx}/images/top_bg.jpg">
-				<tr>
-					<td><img src="${ctx}/images/logo.jpg"></td>
-					<td>
-						<table width="100%" border="0" align="left" cellpadding="0" cellspacing="5">
-							<tr>
-								<td valign="bottom">
-									<div align="right">
-										<a href="#" target="right"><font color="#3D3E3E">首页</font></a>&nbsp;| 
-										<a href="#" target="right"><font color="#3D3E3E">个人信息</font></a>&nbsp;| 
-										<a href="javascript:logout()"><font color="#3D3E3E">退出系统</font></a>
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<td valign="top">
-								<div align="right">
-									您好, <font color="#296DC1"><sec:authentication property="principal.realName"/></font>
-								</div>
-								</td>
-							</tr>
-						</table>
-					</td>
-				</tr>
-			</table>
+			<div id="headerlogo">
+				<img src="${ctx}/images/logo.jpg">
+			</div>
+			<div id="headerleft">
+				<div id="topmenu">
+					<ul>
+						<li><a id="home" name="home" href="">首页</a></li>
+						<li><a id="" name="" href="">个人信息</a></li>
+						<li><a id="logout" name="logout" href=""></a>退出系统</li>
+					</ul>
+					<div id="headerinfo">您好,<font color="#296DC1"><sec:authentication property="principal.realName" /></font></div>
+				</div>
+			</div>
 		</div>
 	</div>
 	<div id="container">
 		<div id="content">
 			<div id="leftside">
+				<iframe id="left" name="left" src="${ctx}/left.do" height="100%" frameborder="0" scrolling="no"></iframe>
 			</div>
 			<div id="rightside">
+				<iframe	id="mainFrameContent" name="right" src="${ctx}/right.do" frameborder="0" marginheight="0" marginwidth="0" scrolling="auto" hspace="0" vspace="0" width="100%" height="100%"></iframe>
 			</div>
 		</div>
 	</div>
 	<div id="footer">
-	<%@ include file="/commons/footer.jsp"%>
+		<%@ include file="/commons/footer.jsp"%>
 	</div>
 </div>
 </body>

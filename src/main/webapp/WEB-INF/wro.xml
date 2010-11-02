@@ -1,21 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <groups xmlns="http://www.isdc.ro/wro"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://www.isdc.ro/wro wro.xsd">
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.isdc.ro/wro wro.xsd">
 	<group name="all">
 		<group-ref>global</group-ref>
 		<group-ref>core</group-ref>
 		<group-ref>main</group-ref>
+		<group-ref>util</group-ref>
 		<!--
-		<group-ref>widgets</group-ref>
-		-->
+			<group-ref>widgets</group-ref>
+			-->
 	</group>
 	<group name="global">
 		<js>/js/json2.js</js>
 		<js>/js/prototype-1.6.1.js</js>
 		<js>/js/jquery-1.4.3.js</js>
-	    <css>/css/global.css</css>
-	    <css>/css/reset.css</css>
+		<css>/css/reset.css</css>
+		<css>/css/global.css</css>		
 	</group>
 	<group name="core">
 		<js>/js/core.js</js>  
@@ -24,18 +25,48 @@
 		<js>/js/jquery.form.js</js>  
 		<css>/skins/default/skin.css</css>
 	</group>
-	<!--
+	<group name="util">
+		<js>/js/Date.js</js>
+		<js>/js/HashMap.js</js>  
+		<js>/js/ArrayList.js</js>
+	</group>
 	<group name="widgets">
-		<group-ref>calendar</group-ref>
-		<group-ref>kindeditor</group-ref>
+		<group-ref>validation</group-ref>
+		<!--
+			<group-ref>calendar</group-ref>
+			<group-ref>kindeditor</group-ref>
+			-->
+		<group-ref>jquery-ui</group-ref>
 	</group>
-	<group name="calendar">
-		<js>/widgets/calendar/**.js</js>  
-	    <css>/widgets/calendar/**.css</css>
+	<group name="validation">
+		<js>/widgets/validation/validation-1.2.8.js</js>  
+		<css>/widgets/validation/css.css</css>
 	</group>	
-	<group name="kindeditor">
-		<js>/widgets/kindeditor/**.js</js>  
-	    <css>/widgets/kindeditor/**.css</css>
+	<!--
+		<group name="calendar">
+			<js>/widgets/calendar/**.js</js>  
+			<css>/widgets/calendar/**.css</css>
+		</group>	
+		<group name="kindeditor">
+			<js>/widgets/kindeditor/**.js</js>  
+			<css>/widgets/kindeditor/**.css</css>
+		</group>
+		-->
+	<group name="jquery-ui">
+		<group-ref>messager</group-ref>
 	</group>
-	-->
+	<group name="messager">
+		<js>/widgets/jquery-ui/messager/js/jquery.draggable.js</js>
+		<js>/widgets/jquery-ui/messager/js/jquery.resizable.js</js>
+		<js>/widgets/jquery-ui/messager/js/jquery.linkbutton.js</js>
+		<js>/widgets/jquery-ui/messager/js/jquery.shadow.js</js>
+		<js>/widgets/jquery-ui/messager/js/jquery.dialog.js</js>
+		<js>/widgets/jquery-ui/messager/js/jquery.messager.js</js>
+		<css>/widgets/jquery-ui/messager/css/dialog.css</css>
+		<css>/widgets/jquery-ui/messager/css/icon.css</css>
+		<css>/widgets/jquery-ui/messager/css/linkbutton.css</css>
+		<css>/widgets/jquery-ui/messager/css/shadow.css</css>
+		<css>/widgets/jquery-ui/messager/css/messager.css</css>
+	</group>
+	
 </groups>

@@ -31,6 +31,15 @@ public interface GenericDao<T, PK extends Serializable> {
 	 */
 	List<T> findAll();
 
+	
+	/**
+	 * 返回唯一的对象
+	 * @param propertyName
+	 * @param value
+	 * @return
+	 */
+	T findByUnique(final String propertyName, final Object value);
+	
 	/**
 	 * 通过对象的实例查找记录
 	 * 

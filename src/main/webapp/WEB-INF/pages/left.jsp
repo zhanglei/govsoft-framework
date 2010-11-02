@@ -9,7 +9,7 @@
 <title>GovSoft系统</title>
 <%@ include file="/commons/header.jsp"%>
 <script type="text/javascript" charset="utf-8">
-
+	var menujson = {};
 </script>	
 </head>
 <body>
@@ -17,6 +17,9 @@
 <div id="header"></div>
 <div id="container">
 	<div id="content">
+		<div id="leftmenu">
+			
+		</div>
 	</div>
 </div>
 <div id="footer">

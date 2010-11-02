@@ -6,9 +6,12 @@ import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
+import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.orm.ObjectRetrievalFailureException;
@@ -78,6 +81,16 @@ public class GenericDaoImpl<T, PK extends Serializable> extends
 		// return findByCriteria(detachedCriteria);
 		return (List<T>) super.getHibernateTemplate().loadAll(
 				getPersistentClass());
+	}
+
+	/**
+	 * 返回唯一的对象
+	 */
+	@SuppressWarnings("unchecked")
+	public T findByUnique(String propertyName, Object value) {
+		Assert.hasText(propertyName, "propertyName不能为空");
+		Criterion criterion = Restrictions.eq(propertyName, value);
+		return (T) createCriteria(criterion).uniqueResult();
 	}
 
 	/**
@@ -241,4 +254,22 @@ public class GenericDaoImpl<T, PK extends Serializable> extends
 		return count.intValue();
 	}
 
+	public Query createQuery(final String queryString, final Object... values) {
+		Assert.hasText(queryString, "queryString不能为空");
+		Query query = getSession().createQuery(queryString);
+		if (values != null) {
+			for (int i = 0; i < values.length; i++) {
+				query.setParameter(i, values[i]);
+			}
+		}
+		return query;
+	}
+
+	public Criteria createCriteria(final Criterion... criterions) {
+		Criteria criteria = getSession().createCriteria(this.persistentClass);
+		for (Criterion c : criterions) {
+			criteria.add(c);
+		}
+		return criteria;
+	}
 }
