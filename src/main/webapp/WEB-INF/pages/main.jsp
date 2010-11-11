@@ -11,11 +11,6 @@
 <%@ include file="/widgets/jquery-ui/messager/messager.jsp"%>
 <script src="${ctx}/wro/util.js" type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript" charset="utf-8">
-	$j(document).ready(function() {
-		$j('#logout').click(logout);
-		showMessager();
-	});
-
 	function showMessager() {//显示系统消息
 		var loginCount = parseInt('<sec:authentication property="principal.loginCount"/>') + 1;
 		var lastLoginTime = '<sec:authentication property="principal.lastLoginTime"/>';
@@ -43,9 +38,14 @@
 			}
 		});
 	}
+
+	$j(document).ready(function() {
+		$j('#logout').click(logout);
+		showMessager();
+	});
 </script>
 </head>
-<body>
+<body style="overflow-y:hidden">
 <div id="page">
 	<div id="header">
 		<div id="topside">
@@ -55,9 +55,9 @@
 			<div id="headerleft">
 				<div id="topmenu">
 					<ul>
-						<li><a id="home" name="home" href="">首页</a></li>
-						<li><a id="" name="" href="">个人信息</a></li>
-						<li><a id="logout" name="logout" href=""></a>退出系统</li>
+						<li><a id="home" name="home" href="${ctx}">首页</a></li>
+						<li><a id="system" name="system" href="#">系统管理</a></li>
+						<li><a id="logout" name="logout" href="javascript:void(0);">退出系统</a></li>
 					</ul>
 					<div id="headerinfo">您好,<font color="#296DC1"><sec:authentication property="principal.realName" /></font></div>
 				</div>
@@ -67,10 +67,10 @@
 	<div id="container">
 		<div id="content">
 			<div id="leftside">
-				<iframe id="left" name="left" src="${ctx}/left.do" height="100%" frameborder="0" scrolling="no"></iframe>
+				<iframe id="left" name="left" src="${ctx}/left.do" width="100%" height="100%" frameborder="0" scrolling="no"></iframe>
 			</div>
 			<div id="rightside">
-				<iframe	id="mainFrameContent" name="right" src="${ctx}/right.do" frameborder="0" marginheight="0" marginwidth="0" scrolling="auto" hspace="0" vspace="0" width="100%" height="100%"></iframe>
+				<iframe	id="right" name="right" src="${ctx}/right.do" width="100%" height="100%" frameborder="0" marginheight="0" marginwidth="0" scrolling="auto" hspace="0" vspace="0" ></iframe>
 			</div>
 		</div>
 	</div>

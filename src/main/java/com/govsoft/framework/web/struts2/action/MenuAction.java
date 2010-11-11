@@ -8,23 +8,32 @@ import javax.annotation.Resource;
 import net.sf.json.JSONArray;
 import net.sf.json.JsonConfig;
 
+import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
 import org.apache.struts2.convention.annotation.Result;
 import org.apache.struts2.convention.annotation.Results;
-import org.apache.struts2.json.annotations.JSON;
+import org.hibernate.criterion.Criterion;
 
 import com.govsoft.framework.Constants;
 import com.govsoft.framework.common.struts2.BaseStruts2Action;
 import com.govsoft.framework.model.Menu;
+import com.govsoft.framework.model.User;
+import com.govsoft.framework.security.web.util.SpringSecurityUtils;
 import com.govsoft.framework.service.MenuService;
+import com.govsoft.framework.service.UserService;
 import com.govsoft.framework.web.util.DateJsonValueProcessor;
 
 @ParentPackage(value = "crud-default")
 @Namespace("")
 @Results( {
-		@Result(name = "list", params = { "excludeProperties",
-				".*hibernateLazyInitializer" }, type = "json"),
+		@Result(name = "jsongrid", params = { "excludeProperties",
+				".*hibernateLazyInitializer", "includeProperties",
+				"^gridModel\\[\\d+\\]\\.\\w+,,rows, page, total, record",
+				"noCache", "true", "ignoreHierarchy", "false",
+				"excludeNullProperties", "true" }, type = "json"),
+		@Result(name = "list", location = MenuAction.PREFIX
+				+ BaseStruts2Action.LIST, type = "redirect"),
 		@Result(name = "form", location = MenuAction.PREFIX
 				+ BaseStruts2Action.EDIT, type = "redirect"),
 		@Result(name = "show", location = MenuAction.PREFIX
@@ -49,24 +58,17 @@ public class MenuAction extends BaseStruts2Action<Menu> {
 	@Resource(name = "menuService")
 	private MenuService menuService;
 
+	@Resource(name = "userService")
+	private UserService userService;
+
 	public void setId(String id) {
 		this.id = id;
 	}
 
-	// public String get_gt_json() {
-	// return _gt_json;
-	// }
-	//
-	// public void set_gt_json(String gtJson) {
-	// _gt_json = gtJson;
-	// }
-
-	@JSON(name = "data")
 	public String getMenuString() {
 		return menuString;
 	}
 
-	@JSON(serialize = false)
 	public List<Menu> getMenus() {
 		return menus;
 	}
@@ -83,18 +85,53 @@ public class MenuAction extends BaseStruts2Action<Menu> {
 		}
 	}
 
-	public String list() throws Exception {
-		menus = menuService.findAll();
-		// menuString = JsonUtils.getJsonStringFromJavaPOJO(menus,
-		// DateJsonValueProcessor.DEFAULT_DATE_PATTERN);
+	@Action("leftmenu")
+	public void leftMenu() {
+		User user = (User) SpringSecurityUtils.getCurrentUser();
+		menus = userService.findById(user.getId()).getMenus();
 		JsonConfig config = new JsonConfig();
 		config.setExcludes(new String[] { "execludeField", "sequence",
-				"parent", "childs", "roles", "authorizedChild" });
+				"parent", "childs", "roles" });
 		config.registerJsonValueProcessor(Date.class,
 				new DateJsonValueProcessor("yyyy-MM-dd"));
 		JSONArray jsonObject = JSONArray.fromObject(menus, config);
 		logger.info(jsonObject.toString());
 		menuString = jsonObject.toString();
+		String[] headers = { "encoding:UTF-8", "no-cache:false" };
+		renderJson(menuString, headers);
+	}
+
+	public String query() throws Exception {
+		return this.refreshGridModel();
+	}
+
+	public String list() throws Exception {
 		return "list";
+	}
+
+	@Override
+	public Long getResultSize() {
+		return menuService.getTotalCount();
+	}
+
+	@Override
+	public List<Menu> listResults(int firstResult, int maxResults) {
+		return menuService.findByPage(firstResult, maxResults);
+	}
+
+	@Override
+	public void sortResults(List<Menu> results, String field, String order) {
+
+	}
+
+	@Override
+	public Long getResultSize(Criterion... criterions) {
+		return menuService.getTotalCount(criterions);
+	}
+
+	@Override
+	public List<Menu> listResults(int firstResult, int maxResults,
+			Criterion... criterions) {
+		return menuService.findByPage(firstResult, maxResults, criterions);
 	}
 }

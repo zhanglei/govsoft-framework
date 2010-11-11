@@ -36,6 +36,7 @@
 			-->	
 		<!-- 限制用户的最大登陆数,防止一个账号被多人使用 -->
 		<s:custom-filter ref="concurrencyFilter" position="CONCURRENT_SESSION_FILTER" />	
+		<s:custom-filter after="SECURITY_CONTEXT_FILTER" ref="autoLoginFilter" />
 		<s:session-management session-authentication-strategy-ref="sas"/>
 	</s:http>
 	<bean id="authenticationFilter" class="com.govsoft.framework.security.web.authentication.ValidateCodeUsernamePasswordAuthenticationFilter">
@@ -45,6 +46,7 @@
 		<property name="authenticationManager" ref="authenticationManager"/>
 		<property name="sessionAuthenticationStrategy" ref="sas"/>
 		<property name="rememberMeServices" ref="rememberMeServices"/>
+		<property name="allowEmptyValidateCode" value="true"/>
 	</bean>
 	<bean id="savedRequestAwareAuthenticationSuccessHandler"
 		class="com.govsoft.framework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler">
@@ -104,6 +106,10 @@
 				<bean class="org.springframework.security.access.vote.AuthenticatedVoter" />  
 			</list>
 		</property>
+	</bean>
+	<bean id="autoLoginFilter" class="com.govsoft.framework.security.web.filter.AutoLoginFilter">
+		<property name="enabled" value="true" />
+		<property name="defaultUserName" value="admin" />
 	</bean>
 	<!--
 		<bean id="filterSecurityInterceptor" class="org.springframework.security.web.access.intercept.FilterSecurityInterceptor">

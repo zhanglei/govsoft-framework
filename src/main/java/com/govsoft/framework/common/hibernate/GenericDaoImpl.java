@@ -1,6 +1,7 @@
 package com.govsoft.framework.common.hibernate;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -8,10 +9,14 @@ import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Projection;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.impl.CriteriaImpl;
+import org.hibernate.transform.ResultTransformer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.orm.ObjectRetrievalFailureException;
@@ -106,6 +111,32 @@ public class GenericDaoImpl<T, PK extends Serializable> extends
 		// crit.add(example);
 		// return crit.list();
 		return super.getHibernateTemplate().findByExample(exampleInstance);
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<T> findByPage(final int firstResult, final int maxResults) {
+		return (List<T>) super.getHibernateTemplate().executeWithNativeSession(
+				new HibernateCallback() {
+					public Object doInHibernate(Session session)
+							throws HibernateException {
+						Criteria criteria = session
+								.createCriteria(getPersistentClass());
+						criteria.setFirstResult(firstResult);
+						criteria.setMaxResults(maxResults);
+						return criteria.list();
+					}
+				});
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<T> findByPage(final int firstResult, final int maxResults,
+			Criterion... criterions) {
+		Criteria criteria = createCriteria(criterions);
+		criteria.setFirstResult(firstResult);
+		criteria.setMaxResults(maxResults);
+		return criteria.list();
+
 	}
 
 	/**
@@ -254,22 +285,102 @@ public class GenericDaoImpl<T, PK extends Serializable> extends
 		return count.intValue();
 	}
 
+	@SuppressWarnings("unchecked")
 	public Query createQuery(final String queryString, final Object... values) {
 		Assert.hasText(queryString, "queryString不能为空");
-		Query query = getSession().createQuery(queryString);
-		if (values != null) {
-			for (int i = 0; i < values.length; i++) {
-				query.setParameter(i, values[i]);
-			}
-		}
-		return query;
+		return (Query) getHibernateTemplate().executeWithNativeSession(
+				new HibernateCallback() {
+					public Object doInHibernate(Session session)
+							throws HibernateException {
+						Query query = session.createQuery(queryString);
+						if (values != null) {
+							for (int i = 0; i < values.length; i++) {
+								query.setParameter(i, values[i]);
+							}
+						}
+						return query;
+					}
+				});
+
 	}
 
+	@SuppressWarnings("unchecked")
 	public Criteria createCriteria(final Criterion... criterions) {
-		Criteria criteria = getSession().createCriteria(this.persistentClass);
-		for (Criterion c : criterions) {
-			criteria.add(c);
-		}
-		return criteria;
+		return (Criteria) getHibernateTemplate().executeWithNativeSession(
+				new HibernateCallback() {
+					public Object doInHibernate(Session session)
+							throws HibernateException {
+						Criteria criteria = session
+								.createCriteria(getPersistentClass());
+						for (Criterion c : criterions) {
+							criteria.add(c);
+						}
+						return criteria;
+					}
+				});
+
 	}
+
+	/**
+	 * 执行count查询获得本次Criteria查询所能获得的对象总数.
+	 */
+
+	@SuppressWarnings("unchecked")
+	protected Long countCriteriaResult(final Criteria c) {
+		CriteriaImpl impl = (CriteriaImpl) c;
+
+		// 先把Projection、ResultTransformer、OrderBy取出来,清空三者后再执行Count操作
+		Projection projection = impl.getProjection();
+		ResultTransformer transformer = impl.getResultTransformer();
+
+		List<CriteriaImpl.OrderEntry> orderEntries = null;
+		try {
+			orderEntries = (List) ReflectionUtils.getFieldValue(impl,
+					"orderEntries");
+			ReflectionUtils
+					.setFieldValue(impl, "orderEntries", new ArrayList());
+		} catch (Exception e) {
+			logger.error("不可能抛出的异常:{}", e.getMessage());
+		}
+
+		// 执行Count查询
+		Long totalCountObject = (Long) c.setProjection(Projections.rowCount())
+				.uniqueResult();
+		Long totalCount = (totalCountObject != null) ? totalCountObject : 0;
+
+		// 将之前的Projection,ResultTransformer和OrderBy条件重新设回去
+		c.setProjection(projection);
+
+		if (projection == null) {
+			c.setResultTransformer(CriteriaSpecification.ROOT_ENTITY);
+		}
+		if (transformer != null) {
+			c.setResultTransformer(transformer);
+		}
+		try {
+			ReflectionUtils.setFieldValue(impl, "orderEntries", orderEntries);
+		} catch (Exception e) {
+			logger.error("不可能抛出的异常:{}", e.getMessage());
+		}
+
+		return totalCount;
+	}
+
+	private String prepareCountHql() {
+		String countHql = "select count(*) from "
+				+ getPersistentClass().getName();
+		return countHql;
+	}
+
+	@Override
+	public Long getTotalCount() {
+		String countHql = prepareCountHql();
+		return (Long) createQuery(countHql).uniqueResult();
+	}
+
+	@Override
+	public Long getTotalCount(Criterion... criterions) {
+		return countCriteriaResult(createCriteria(criterions));
+	}
+
 }

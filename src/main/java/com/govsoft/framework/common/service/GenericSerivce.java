@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 
+import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.DetachedCriteria;
 
 public interface GenericSerivce<T, PK extends Serializable> {
@@ -38,6 +39,22 @@ public interface GenericSerivce<T, PK extends Serializable> {
 	 * @return
 	 */
 	List<T> findByExample(final T exampleInstance);
+
+	/**
+	 * 分页查询
+	 * 
+	 * @param from
+	 * @param length
+	 * @return
+	 */
+	List<T> findByPage(final int firstResult, final int maxResults);
+
+	List<T> findByPage(final int firstResult, final int maxResults,
+			final Criterion... criterions);
+
+	Long getTotalCount();
+
+	Long getTotalCount(final Criterion... criterions);
 
 	/**
 	 * 通过namedQuery来查找
@@ -111,5 +128,5 @@ public interface GenericSerivce<T, PK extends Serializable> {
 	 * @param entities
 	 */
 	void deleteAll(final Collection<T> entities);
-	
+
 }

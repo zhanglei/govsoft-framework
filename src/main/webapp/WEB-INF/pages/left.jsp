@@ -8,8 +8,43 @@
 <%@ include file="/commons/meta.jsp"%>
 <title>GovSoft系统</title>
 <%@ include file="/commons/header.jsp"%>
+<%@ include file="/widgets/jquery-ui/accordion/accordion.jsp"%>
 <script type="text/javascript" charset="utf-8">
+	var url = "${ctx}/leftmenu.do";
 	var menujson = {};
+	$j(document).ready(function(){
+		$j.getJSON(url,function(json){
+			menujson = json;
+			$j.each(json,function(i,menu){
+				var menu_h3;
+				var menu_div;
+				if(i==0){
+					menu_h3 = $j('<h3 class="ui-accordion-header ui-helper-reset ui-state-active ui-corner-top"><span class="ui-icon ui-icon-triangle-1-s"/><a href="#">'+menu.name+'</a></h3>');
+					menu_div = $j('<div class="ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom ui-accordion-content-active"></div>');
+				} else {
+					menu_h3 = $j('<h3 class="ui-accordion-header ui-helper-reset ui-state-default ui-corner-all"><span class="ui-icon ui-icon-triangle-1-s"/><a href="#">'+menu.name+'</a></h3>');
+					menu_div = $j('<div class="ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom"></div>');
+				}
+				var authorizedChild = menu.authorizedChild;
+				if(typeof authorizedChild !== 'undefined'){
+					var menu_ul = $j("<ul></ul>");
+					$j.each(authorizedChild,function(j,submenu){
+						var menu_li = $j('<li></li>');
+						var submenu_a = $j('<a href="javascript:void(0)">'+submenu.name+'</a>');
+						submenu_a.click(function(){
+							parent.right.location.href = "${ctx}/"+submenu.url;
+						});
+						menu_li.append(submenu_a);
+						menu_ul.append(menu_li);
+					});
+					menu_div.append(menu_ul);
+				}
+				$j('#accordion').append(menu_h3);
+				$j('#accordion').append(menu_div);
+			});
+		});
+		$j('#accordion').accordion();
+	});
 </script>	
 </head>
 <body>
@@ -17,8 +52,9 @@
 <div id="header"></div>
 <div id="container">
 	<div id="content">
-		<div id="leftmenu">
-			
+		<div id="leftmenu" class="ui-widget-content">
+			<div id="accordion">
+			</div>
 		</div>
 	</div>
 </div>

@@ -1,9 +1,7 @@
 package com.govsoft.framework.security.web.session;
 
 import java.io.IOException;
-import java.util.concurrent.TimeoutException;
 
-import javax.annotation.Resource;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
@@ -11,9 +9,6 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
-import net.rubyeye.xmemcached.MemcachedClient;
-import net.rubyeye.xmemcached.exception.MemcachedException;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -26,8 +21,6 @@ import org.springframework.security.web.authentication.logout.SecurityContextLog
 import org.springframework.security.web.util.UrlUtils;
 import org.springframework.util.Assert;
 
-import com.govsoft.framework.Constants;
-
 public class ConcurrentSessionFilter extends
 		org.springframework.security.web.session.ConcurrentSessionFilter {
 
@@ -35,9 +28,6 @@ public class ConcurrentSessionFilter extends
 	private String expiredUrl;
 	private LogoutHandler[] handlers = new LogoutHandler[] { new SecurityContextLogoutHandler() };
 	private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
-
-	@Resource(name = "memcachedClient")
-	private MemcachedClient memcachedClient;
 
 	// ~ Methods
 	// ========================================================================================================
@@ -66,15 +56,6 @@ public class ConcurrentSessionFilter extends
 				if (info.isExpired()) {
 					// Expired - abort processing
 					doLogout(request, response);
-					try {
-						memcachedClient.delete(Constants.SESSION_KEY);
-					} catch (TimeoutException e) {
-						e.printStackTrace();
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					} catch (MemcachedException e) {
-						e.printStackTrace();
-					}
 					String targetUrl = determineExpiredUrl(request, info);
 
 					if (targetUrl != null) {
@@ -95,21 +76,6 @@ public class ConcurrentSessionFilter extends
 				} else {
 					// Non-expired - update last request date/time
 					info.refreshLastRequest();
-					try {
-						Object principal = memcachedClient
-								.get(Constants.SESSION_KEY);
-						if (principal != null) {
-							memcachedClient.set(Constants.SESSION_KEY,
-									Constants.SESSION_EXPIRY_TIME, principal);
-						}
-					} catch (TimeoutException e) {
-						e.printStackTrace();
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					} catch (MemcachedException e) {
-						e.printStackTrace();
-					}
-
 				}
 			}
 		}

@@ -28,19 +28,20 @@
 *main css
 */
 #topside {
-	
+	height: 90px;
 }
 
 #headerlogo {
 	float: left;
-	height: 90px;
+	height: 100%;
 	width:35%;
 }
 #headerleft {
-	height: 90px;
+	height: 100%;
 	background: url(images/top_bg.jpg);
 }
 #topmenu {
+	height: 100%;
 	float: right;
 }
 
@@ -84,13 +85,16 @@
 
 #leftside {
 	float: left;
-	width:30%;
-	height:85%;
+	width:20%;
+	height:550px;
 }
 
 #rightside {
 	float: right;
-	width:70%;
-	height:85%;
+	width:80%;
+	height:550px;
 }
 
+#leftmenu {
+	height:550px;
+}

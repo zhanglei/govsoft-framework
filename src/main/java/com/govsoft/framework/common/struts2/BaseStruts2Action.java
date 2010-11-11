@@ -1,6 +1,8 @@
 package com.govsoft.framework.common.struts2;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -11,6 +13,7 @@ import net.sf.json.JSONObject;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts2.ServletActionContext;
+import org.hibernate.criterion.Criterion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,9 +35,9 @@ public abstract class BaseStruts2Action<T> extends ActionSupport implements
 	public static final String ADD = "add.do";
 	public static final String EDIT = "edit.do";
 	public static final String SHOW = "show.do";
-	
+
 	public static final String HAS_NO_PRIVILEGE = "对不起!您没有权限访问!";
-	
+
 	public static final String SYSTEM_ERROR = "系统错误!";
 
 	// header 常量定义//
@@ -48,8 +51,35 @@ public abstract class BaseStruts2Action<T> extends ActionSupport implements
 	private final String JSON = "application/json";
 	private final String XML = "text/xml";
 	private final String HTML = "text/html";
-	
-	
+
+	// 和jqGrid组件相关的参数属性
+	private List<T> gridModel = Collections.emptyList();
+	private Integer rows = 0;
+	private Integer page = 0;
+	private Integer total = 0;
+	private Long record = new Long(0);
+	private String sord;
+	private String sidx;
+
+	// 添加和查询有关的成员变量search、searchField、searchString、searchOper
+	private Boolean search;
+	private String searchField;
+	private String searchString;
+	private String searchOper;
+
+	private String ajaxResult;
+
+	public abstract Long getResultSize();
+
+	public abstract List<T> listResults(int firstResult, int maxResults);
+
+	// 添加用于根据条件进行查询的方法
+	public abstract Long getResultSize(Criterion... criterions);
+
+	public abstract List<T> listResults(int firstResult, int maxResults,
+			Criterion... criterions);
+
+	public abstract void sortResults(List<T> results, String field, String order);
 
 	/**
 	 * 取得HttpSession的简化方法.
@@ -191,6 +221,115 @@ public abstract class BaseStruts2Action<T> extends ActionSupport implements
 	public void renderJson(final Object object, final String... headers) {
 		String jsonString = JSONObject.fromObject(object).toString();
 		render(JSON, jsonString, headers);
+	}
+
+	public String refreshGridModel() {
+		try {
+			List<T> results = Collections.emptyList();
+			record = this.getResultSize();
+			int from = rows * (page - 1);
+			int length = rows;
+			results = this.listResults(from, length);
+			this.setGridModel(results);
+			total = (int) Math.ceil((double) record / (double) rows);
+			return "jsongrid";
+		} catch (Exception e) {
+			e.printStackTrace();
+			this.addActionError(e.getMessage());
+			return ERROR;
+		}
+	}
+
+	public List<T> getGridModel() {
+		return gridModel;
+	}
+
+	public void setGridModel(List<T> gridModel) {
+		this.gridModel = gridModel;
+	}
+
+	public Integer getRows() {
+		return rows;
+	}
+
+	public void setRows(Integer rows) {
+		this.rows = rows;
+	}
+
+	public Integer getPage() {
+		return page;
+	}
+
+	public void setPage(Integer page) {
+		this.page = page;
+	}
+
+	public Integer getTotal() {
+		return total;
+	}
+
+	public void setTotal(Integer total) {
+		this.total = total;
+	}
+
+	public Long getRecord() {
+		return record;
+	}
+
+	public void setRecord(Long record) {
+		this.record = record;
+	}
+
+	public String getSord() {
+		return sord;
+	}
+
+	public void setSord(String sord) {
+		this.sord = sord;
+	}
+
+	public String getSidx() {
+		return sidx;
+	}
+
+	public void setSidx(String sidx) {
+		this.sidx = sidx;
+	}
+
+	public Boolean getSearch() {
+		return search;
+	}
+
+	public void setSearch(Boolean search) {
+		this.search = search;
+	}
+
+	public String getSearchField() {
+		return searchField;
+	}
+
+	public void setSearchField(String searchField) {
+		this.searchField = searchField;
+	}
+
+	public String getSearchString() {
+		return searchString;
+	}
+
+	public void setSearchString(String searchString) {
+		this.searchString = searchString;
+	}
+
+	public String getSearchOper() {
+		return searchOper;
+	}
+
+	public void setSearchOper(String searchOper) {
+		this.searchOper = searchOper;
+	}
+
+	public String getAjaxResult() {
+		return ajaxResult;
 	}
 
 }

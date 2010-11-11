@@ -53,7 +53,17 @@
 		</group>
 		-->
 	<group name="jquery-ui">
+		<group-ref>accordion</group-ref>
 		<group-ref>messager</group-ref>
+		<group-ref>grid</group-ref>
+	</group>
+	<group name="accordion">
+		<js>/widgets/jquery-ui/accordion/js/jquery.ui.core.js</js>
+		<js>/widgets/jquery-ui/accordion/js/jquery.ui.widget.js</js>
+		<js>/widgets/jquery-ui/accordion/js/jquery.ui.accordion.js</js>
+		<css>/widgets/jquery-ui/accordion/css/jquery.ui.core.css</css>
+		<css>/widgets/jquery-ui/accordion/css/jquery.ui.accordion.css</css>
+		<css>/widgets/jquery-ui/accordion/css/jquery.ui.theme.css</css>
 	</group>
 	<group name="messager">
 		<js>/widgets/jquery-ui/messager/js/jquery.draggable.js</js>
@@ -68,5 +78,26 @@
 		<css>/widgets/jquery-ui/messager/css/shadow.css</css>
 		<css>/widgets/jquery-ui/messager/css/messager.css</css>
 	</group>
-	
+	<group name="grid">
+		<js>/widgets/jquery-ui/grid/js/grid.base.js</js>
+		<js>/widgets/jquery-ui/grid/js/grid.common.js</js>
+		<js>/widgets/jquery-ui/grid/js/grid.formedit.js</js>
+		<js>/widgets/jquery-ui/grid/js/grid.inlinedit.js</js>
+		<js>/widgets/jquery-ui/grid/js/grid.celledit.js</js>
+		<js>/widgets/jquery-ui/grid/js/grid.subgrid.js</js>
+		<js>/widgets/jquery-ui/grid/js/grid.treegrid.js</js>
+		<js>/widgets/jquery-ui/grid/js/grid.grouping.js</js>
+		<js>/widgets/jquery-ui/grid/js/grid.custom.js</js>
+		<js>/widgets/jquery-ui/grid/js/grid.postext.js</js>
+		<js>/widgets/jquery-ui/grid/js/grid.tbltogrid.js</js>
+		<js>/widgets/jquery-ui/grid/js/grid.setcolumns.js</js>
+		<js>/widgets/jquery-ui/grid/js/grid.import.js</js>
+		<js>/widgets/jquery-ui/grid/js/jquery.fmatter.js</js>
+		<js>/widgets/jquery-ui/grid/js/JsonXml.js</js>
+		<js>/widgets/jquery-ui/grid/js/grid.jqueryui.js</js>
+		<js>/widgets/jquery-ui/grid/js/jquery.searchFilter.js</js>
+		<css>/widgets/jquery-ui/grid/css/jquery.ui.core.css</css>
+		<css>/widgets/jquery-ui/grid/css/jquery.ui.jqgrid.css</css>
+		<css>/widgets/jquery-ui/grid/css/jquery.ui.theme.css</css>
+	</group>
 </groups>

@@ -9,6 +9,7 @@ import org.apache.struts2.convention.annotation.ParentPackage;
 import org.apache.struts2.convention.annotation.Result;
 import org.apache.struts2.convention.annotation.Results;
 import org.apache.struts2.json.annotations.JSON;
+import org.hibernate.criterion.Criterion;
 
 import com.govsoft.framework.Constants;
 import com.govsoft.framework.common.struts2.BaseStruts2Action;
@@ -18,7 +19,13 @@ import com.govsoft.framework.service.OrgService;
 @ParentPackage(value = "crud-default")
 @Namespace("")
 @Results( {
-		@Result(name = "list", type = "json"),
+		@Result(name = "jsongrid", params = { "excludeProperties",
+				".*hibernateLazyInitializer", "includeProperties",
+				"^gridModel\\[\\d+\\]\\.\\w+,,rows, page, total, record",
+				"noCache", "true", "ignoreHierarchy", "false",
+				"excludeNullProperties", "true" }, type = "json"),
+		@Result(name = "list", location = OrgAction.PREFIX
+				+ BaseStruts2Action.LIST, type = "redirect"),
 		@Result(name = "form", location = OrgAction.PREFIX
 				+ BaseStruts2Action.EDIT, type = "redirect"),
 		@Result(name = "show", location = OrgAction.PREFIX
@@ -60,8 +67,38 @@ public class OrgAction extends BaseStruts2Action<Org> {
 		}
 	}
 
+	public String query() throws Exception {
+		return this.refreshGridModel();
+	}
+
 	public String list() throws Exception {
 		return "list";
+	}
+
+	@Override
+	public Long getResultSize() {
+		return orgService.getTotalCount();
+	}
+
+	@Override
+	public List<Org> listResults(int firstResult, int maxResults) {
+		return orgService.findByPage(firstResult, maxResults);
+	}
+
+	@Override
+	public void sortResults(List<Org> results, String field, String order) {
+
+	}
+
+	@Override
+	public Long getResultSize(Criterion... criterions) {
+		return orgService.getTotalCount(criterions);
+	}
+
+	@Override
+	public List<Org> listResults(int firstResult, int maxResults,
+			Criterion... criterions) {
+		return orgService.findByPage(firstResult, maxResults, criterions);
 	}
 
 }

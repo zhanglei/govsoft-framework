@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 
+import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.DetachedCriteria;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -71,6 +72,27 @@ public class GenericSerivceImpl<T, PK extends Serializable> implements
 	@Transactional(readOnly = true)
 	public List<T> findByExample(final T exampleInstance) {
 		return genericDao.findByExample(exampleInstance);
+	}
+
+	@Transactional(readOnly = true)
+	public List<T> findByPage(final int firstResult, final int maxResults) {
+		return genericDao.findByPage(firstResult, maxResults);
+	}
+
+	@Transactional(readOnly = true)
+	public List<T> findByPage(final int firstResult, final int maxResults,
+			final Criterion... criterions) {
+		return genericDao.findByPage(firstResult, maxResults, criterions);
+	}
+
+	@Transactional(readOnly = true)
+	public Long getTotalCount() {
+		return genericDao.getTotalCount();
+	}
+
+	@Transactional(readOnly = true)
+	public Long getTotalCount(Criterion... criterions) {
+		return genericDao.getTotalCount(criterions);
 	}
 
 	/**
@@ -160,7 +182,7 @@ public class GenericSerivceImpl<T, PK extends Serializable> implements
 	public void delete(final T object) {
 		delete(object);
 	}
-	
+
 	@Transactional
 	public void deleteAll(Collection<T> entities) {
 		deleteAll(entities);
