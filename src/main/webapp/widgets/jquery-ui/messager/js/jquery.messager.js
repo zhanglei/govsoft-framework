@@ -22,6 +22,7 @@
 				showSpeed: 600,
 				width: 250,
 				height: 100,
+				center: false,
 				msg: '',
 				title: '',
 				timeout: 4000
@@ -33,6 +34,7 @@
 				title:options.title,
 				shadow:false,
 				resizable:false,
+				center:options.center,
 				showType:options.showType,
 				showSpeed:options.showSpeed,
 				width:options.width,

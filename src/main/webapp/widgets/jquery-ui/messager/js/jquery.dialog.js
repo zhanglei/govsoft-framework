@@ -207,7 +207,9 @@
 				$(this).css('height', null);
 				if (opts.width) dialog.width(opts.width);
 				if (opts.height) dialog.height(opts.height);
-				center(dialog);
+				if(opts.center){
+					center(dialog);
+				}
 			}
 			
 			// set dialog position, width and height
@@ -334,6 +336,7 @@
 		resizable: true,
 		modal: false,
 		shadow: true,
+		center: true,
 		width: 300,
 		height: null,
 		showType: null,
