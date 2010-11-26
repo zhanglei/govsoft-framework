@@ -7,19 +7,20 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.govsoft.framework.common.service.GenericSerivceImpl;
-import com.govsoft.framework.dao.OrgDao;
-import com.govsoft.framework.model.Org;
+import com.govsoft.framework.dao.RaceDao;
+import com.govsoft.framework.model.Race;
+import com.govsoft.framework.service.RaceService;
 
-@Service("orgService")
+@Service("raceService")
 @Transactional
-public class OrgServiceImpl extends GenericSerivceImpl<Org, String> implements
-		com.govsoft.framework.service.OrgService {
-	@Resource(name = "orgDao")
-	private OrgDao orgDao;
+public class RaceServiceImpl extends GenericSerivceImpl<Race, String> implements
+		RaceService {
+	@Resource(name = "raceDao")
+	private RaceDao raceDao;
 
 	@SuppressWarnings("unused")
 	@PostConstruct
 	private void init() {
-		super.setGenericDao(orgDao);
+		super.setGenericDao(raceDao);
 	}
 }

@@ -7,19 +7,21 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.govsoft.framework.common.service.GenericSerivceImpl;
-import com.govsoft.framework.dao.OrgDao;
-import com.govsoft.framework.model.Org;
+import com.govsoft.framework.dao.RegionDao;
+import com.govsoft.framework.model.Region;
+import com.govsoft.framework.service.RegionService;
 
-@Service("orgService")
+@Service("regionService")
 @Transactional
-public class OrgServiceImpl extends GenericSerivceImpl<Org, String> implements
-		com.govsoft.framework.service.OrgService {
-	@Resource(name = "orgDao")
-	private OrgDao orgDao;
+public class RegionServiceImpl extends GenericSerivceImpl<Region, String>
+		implements RegionService {
+	@Resource(name = "regionDao")
+	private RegionDao regionDao;
 
 	@SuppressWarnings("unused")
 	@PostConstruct
 	private void init() {
-		super.setGenericDao(orgDao);
+		super.setGenericDao(regionDao);
 	}
+
 }

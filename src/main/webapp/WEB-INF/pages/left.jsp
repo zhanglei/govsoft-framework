@@ -18,13 +18,24 @@
 			$j.each(json,function(i,menu){
 				var menu_h3;
 				var menu_div;
+				var menu_span;				
+				var menu_a = $j('<a href="#">'+menu.name+'</a>');
 				if(i==0){
-					menu_h3 = $j('<h3 class="ui-accordion-header ui-helper-reset ui-state-active ui-corner-top"><span class="ui-icon ui-icon-triangle-1-s"/><a href="#">'+menu.name+'</a></h3>');
+					menu_h3 = $j('<h3 class="ui-accordion-header ui-helper-reset ui-state-active ui-corner-top"></h3>');
+					menu_span = $j('<span class="ui-icon ui-icon-triangle-1-s"/>');
 					menu_div = $j('<div class="ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom ui-accordion-content-active"></div>');
 				} else {
-					menu_h3 = $j('<h3 class="ui-accordion-header ui-helper-reset ui-state-default ui-corner-all"><span class="ui-icon ui-icon-triangle-1-s"/><a href="#">'+menu.name+'</a></h3>');
+					menu_h3 = $j('<h3 class="ui-accordion-header ui-helper-reset ui-state-default ui-corner-all"></h3>');
+					menu_span = $j('<span class="ui-icon ui-icon-triangle-1-e"/>');
 					menu_div = $j('<div class="ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom"></div>');
 				}
+				menu_h3.append(menu_span);
+				menu_h3.append(menu_a);
+				menu_h3.click(function() {
+					$j(this).children('span').toggleClass('ui-icon-triangle-1-s');
+					$j(this).next().toggle('slow');
+					return false;
+				}).next().hide();
 				var authorizedChild = menu.authorizedChild;
 				if(typeof authorizedChild !== 'undefined'){
 					var menu_ul = $j("<ul></ul>");

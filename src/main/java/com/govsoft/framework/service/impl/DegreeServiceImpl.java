@@ -7,19 +7,19 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.govsoft.framework.common.service.GenericSerivceImpl;
-import com.govsoft.framework.dao.OrgDao;
-import com.govsoft.framework.model.Org;
+import com.govsoft.framework.dao.DegreeDao;
+import com.govsoft.framework.model.Degree;
 
-@Service("orgService")
+@Service("degreeService")
 @Transactional
-public class OrgServiceImpl extends GenericSerivceImpl<Org, String> implements
-		com.govsoft.framework.service.OrgService {
-	@Resource(name = "orgDao")
-	private OrgDao orgDao;
+public class DegreeServiceImpl extends GenericSerivceImpl<Degree, String>
+		implements com.govsoft.framework.service.DegreeService {
+	@Resource(name = "degreeDao")
+	private DegreeDao degreeDao;
 
 	@SuppressWarnings("unused")
 	@PostConstruct
 	private void init() {
-		super.setGenericDao(orgDao);
+		super.setGenericDao(degreeDao);
 	}
 }
