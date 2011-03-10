@@ -108,7 +108,7 @@
 		</property>
 	</bean>
 	<bean id="autoLoginFilter" class="com.govsoft.framework.security.web.filter.AutoLoginFilter">
-		<property name="enabled" value="true" />
+		<property name="enabled" value="false" />
 		<property name="defaultUserName" value="admin" />
 	</bean>
 	<!--

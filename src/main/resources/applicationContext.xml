@@ -85,6 +85,16 @@
 			<list> 
 				<value>com.govsoft.*.model</value>
 			</list> 
+		</property>
+		<property name="eventListeners">
+			<map>
+				<entry key="save-update">
+					<list>
+						<bean class="com.govsoft.framework.common.hibernate.AuditListener" />
+						<bean class="org.hibernate.event.def.DefaultSaveOrUpdateEventListener" />
+					</list>
+				</entry>
+			</map>			
 		</property> 
 		<property name="hibernateProperties"> 
 			<props>
@@ -176,8 +186,13 @@
 			用于持有ApplicationContext,可以使用ApplicationContextHolder.getBean('xxxx')的静态方法得到spring
 			bean对象
 		-->
-	<bean class="com.govsoft.framework.common.util.SpringContextUtils"/>
-	
+	<bean class="com.govsoft.framework.common.spring.SpringContextHolder" lazy-init="false"/>
+	<!-- JSR303 Validator定义 -->
+	<!--
+			<bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean" />
+		-->
+	<!-- dozer DTO复制工具类定义 -->
+	<bean id="dozer" class="org.dozer.DozerBeanMapper" />
 	<bean id="solrServerFactory" class="com.govsoft.framework.solr.SolrServerFactoryBean">
 		<property name="serverUrl" value="http://localhost:8983/solr" />
 	</bean>
