@@ -13,8 +13,8 @@
 	</group>
 	<group name="global">
 		<js>/js/json2.js</js>
-		<js>/js/prototype-1.6.1.js</js>
-		<js>/js/jquery-1.4.4.js</js>
+		<js>/js/prototype-1.7.js</js>
+		<js>/js/jquery-1.5.js</js>
 		<css>/css/reset.css</css>
 		<css>/css/global.css</css>		
 	</group>
