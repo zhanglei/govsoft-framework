@@ -163,7 +163,7 @@ public class User extends BaseEntity implements UserDetails {
 	/**
 	 * 总共登录次数
 	 */
-	@Column(name = "login_count", unique = false, nullable = true, insertable = true, updatable = true, length = 50)
+	@Column(name = "login_count", unique = false, nullable = true, insertable = true, updatable = true)
 	private Integer loginCount;
 
 	/**

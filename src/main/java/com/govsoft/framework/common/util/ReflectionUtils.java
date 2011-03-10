@@ -270,14 +270,18 @@ public final class ReflectionUtils {
 	/**
 	 * 将反射时的checked exception转换为unchecked exception.
 	 */
-	public static IllegalArgumentException convertToUncheckedException(
+	public static RuntimeException convertToUncheckedException(
 			Exception e) {
-		if (e instanceof IllegalAccessException
-				|| e instanceof IllegalArgumentException
-				|| e instanceof NoSuchMethodException)
-			return new IllegalArgumentException("Refelction Exception.", e);
-		else
-			return new IllegalArgumentException(e);
+		if (e instanceof IllegalAccessException || e instanceof IllegalArgumentException
+				|| e instanceof NoSuchMethodException) {
+			return new IllegalArgumentException("Reflection Exception.", e);
+		} else if (e instanceof InvocationTargetException) {
+			return new RuntimeException("Reflection Exception.", ((InvocationTargetException) e).getTargetException());
+		} else if (e instanceof RuntimeException) {
+			return (RuntimeException) e;
+		}
+		return new RuntimeException("Unexpected Checked Exception.", e);
 	}
+	
 
 }

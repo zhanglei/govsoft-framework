@@ -1,21 +1,26 @@
 package com.govsoft.framework.common.struts2;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.Collections;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
+import java.util.StringTokenizer;
+import java.util.TreeMap;
 
+import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import net.sf.json.JSONObject;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts2.ServletActionContext;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.hibernate.criterion.Criterion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.Assert;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
@@ -36,21 +41,27 @@ public abstract class BaseStruts2Action<T> extends ActionSupport implements
 	public static final String EDIT = "edit.do";
 	public static final String SHOW = "show.do";
 
-	public static final String HAS_NO_PRIVILEGE = "对不起!您没有权限访问!";
-
-	public static final String SYSTEM_ERROR = "系统错误!";
-
 	// header 常量定义//
-	private final String ENCODING_PREFIX = "encoding";
-	private final String NOCACHE_PREFIX = "no-cache";
-	private final String ENCODING_DEFAULT = "UTF-8";
-	private final boolean NOCACHE_DEFAULT = true;
+	private static final String ENCODING_PREFIX = "encoding";
+	private static final String NOCACHE_PREFIX = "no-cache";
+	private static final String ENCODING_DEFAULT = "UTF-8";
+	private static final boolean NOCACHE_DEFAULT = true;
+
+	private static ObjectMapper mapper = new ObjectMapper();
 
 	// content-type 定义 //
-	private final String TEXT = "text/plain";
-	private final String JSON = "application/json";
-	private final String XML = "text/xml";
-	private final String HTML = "text/html";
+	public static final String TEXT = "text/plain";
+	public static final String JSON = "application/json";
+	public static final String XML = "text/xml";
+	public static final String HTML = "text/html";
+	public static final String JS_TYPE = "text/javascript";
+	public static final String EXCEL_TYPE = "application/vnd.ms-excel";
+
+	// -- Header 定义 --//
+	public static final String AUTHENTICATION_HEADER = "Authorization";
+
+	// -- 常用数值定义 --//
+	public static final long ONE_YEAR_SECONDS = 60 * 60 * 24 * 365;
 
 	// 和jqGrid组件相关的参数属性
 	private List<T> gridModel = Collections.emptyList();
@@ -107,6 +118,148 @@ public abstract class BaseStruts2Action<T> extends ActionSupport implements
 	 */
 	public String getParameter(String name) {
 		return getRequest().getParameter(name);
+	}
+
+	/**
+	 * 设置客户端缓存过期时间 的Header.
+	 */
+	public static void setExpiresHeader(HttpServletResponse response,
+			long expiresSeconds) {
+		// Http 1.0 header
+		response.setDateHeader("Expires", System.currentTimeMillis()
+				+ expiresSeconds * 1000);
+		// Http 1.1 header
+		response.setHeader("Cache-Control", "private, max-age="
+				+ expiresSeconds);
+	}
+
+	/**
+	 * 设置禁止客户端缓存的Header.
+	 */
+	public static void setDisableCacheHeader(HttpServletResponse response) {
+		// Http 1.0 header
+		response.setDateHeader("Expires", 1L);
+		response.addHeader("Pragma", "no-cache");
+		// Http 1.1 header
+		response.setHeader("Cache-Control", "no-cache, no-store, max-age=0");
+	}
+
+	/**
+	 * 设置LastModified Header.
+	 */
+	public static void setLastModifiedHeader(HttpServletResponse response,
+			long lastModifiedDate) {
+		response.setDateHeader("Last-Modified", lastModifiedDate);
+	}
+
+	/**
+	 * 设置Etag Header.
+	 */
+	public static void setEtag(HttpServletResponse response, String etag) {
+		response.setHeader("ETag", etag);
+	}
+
+	/**
+	 * 根据浏览器If-Modified-Since Header, 计算文件是否已被修改.
+	 * 
+	 * 如果无修改, checkIfModify返回false ,设置304 not modify status.
+	 * 
+	 * @param lastModified
+	 *            内容的最后修改时间.
+	 */
+	public static boolean checkIfModifiedSince(HttpServletRequest request,
+			HttpServletResponse response, long lastModified) {
+		long ifModifiedSince = request.getDateHeader("If-Modified-Since");
+		if ((ifModifiedSince != -1) && (lastModified < ifModifiedSince + 1000)) {
+			response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * 根据浏览器 If-None-Match Header, 计算Etag是否已无效.
+	 * 
+	 * 如果Etag有效, checkIfNoneMatch返回false, 设置304 not modify status.
+	 * 
+	 * @param etag
+	 *            内容的ETag.
+	 */
+	public static boolean checkIfNoneMatchEtag(HttpServletRequest request,
+			HttpServletResponse response, String etag) {
+		String headerValue = request.getHeader("If-None-Match");
+		if (headerValue != null) {
+			boolean conditionSatisfied = false;
+			if (!"*".equals(headerValue)) {
+				StringTokenizer commaTokenizer = new StringTokenizer(
+						headerValue, ",");
+
+				while (!conditionSatisfied && commaTokenizer.hasMoreTokens()) {
+					String currentToken = commaTokenizer.nextToken();
+					if (currentToken.trim().equals(etag)) {
+						conditionSatisfied = true;
+					}
+				}
+			} else {
+				conditionSatisfied = true;
+			}
+
+			if (conditionSatisfied) {
+				response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
+				response.setHeader("ETag", etag);
+				return false;
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * 设置让浏览器弹出下载对话框的Header.
+	 * 
+	 * @param fileName
+	 *            下载后的文件名.
+	 */
+	public static void setFileDownloadHeader(HttpServletResponse response,
+			String fileName) {
+		try {
+			// 中文文件名支持
+			String encodedfileName = new String(fileName.getBytes(),
+					"ISO8859-1");
+			response.setHeader("Content-Disposition", "attachment; filename=\""
+					+ encodedfileName + "\"");
+		} catch (UnsupportedEncodingException e) {
+		}
+	}
+
+	/**
+	 * 取得带相同前缀的Request Parameters.
+	 * 
+	 * 返回的结果的Parameter名已去除前缀.
+	 */
+	@SuppressWarnings("unchecked")
+	public static Map<String, Object> getParametersStartingWith(
+			ServletRequest request, String prefix) {
+		Assert.notNull(request, "Request must not be null");
+		Enumeration paramNames = request.getParameterNames();
+		Map<String, Object> params = new TreeMap<String, Object>();
+		if (prefix == null) {
+			prefix = "";
+		}
+		while (paramNames != null && paramNames.hasMoreElements()) {
+			String paramName = (String) paramNames.nextElement();
+			if ("".equals(prefix) || paramName.startsWith(prefix)) {
+				String unprefixed = paramName.substring(prefix.length());
+				String[] values = request.getParameterValues(paramName);
+				if (values == null || values.length == 0) {
+					// Do nothing, no values found at all.
+				} else if (values.length > 1) {
+					params.put(unprefixed, values);
+				} else {
+					params.put(unprefixed, values[0]);
+				}
+			}
+		}
+		return params;
 	}
 
 	// 绕过jsp/freemaker直接输出文本的函数 //
@@ -199,17 +352,33 @@ public abstract class BaseStruts2Action<T> extends ActionSupport implements
 	}
 
 	/**
+	 * 直接输出JSON,使用Jackson转换Java对象.
+	 * 
+	 * @param data
+	 *            可以是List<POJO>, POJO[], POJO, 也可以Map名值对.
+	 * @see #render(String, String, String...)
+	 */
+	public void renderJson(final Object data, final String... headers) {
+		HttpServletResponse response = initResponseHeader(JSON, headers);
+		try {
+			mapper.writeValue(response.getWriter(), data);
+		} catch (IOException e) {
+			throw new IllegalArgumentException(e);
+		}
+	}
+
+	/**
 	 * 直接输出JSON.
 	 * 
 	 * @param map
 	 *            Map对象,将被转化为json字符串.
 	 * @see #render(String, String, String...)
 	 */
-	@SuppressWarnings("unchecked")
-	public void renderJson(final Map map, final String... headers) {
-		String jsonString = JSONObject.fromObject(map).toString();
-		render(JSON, jsonString, headers);
-	}
+	// @SuppressWarnings("unchecked")
+	// public void renderJson(final Map map, final String... headers) {
+	// String jsonString = JSONObject.fromObject(map).toString();
+	// render(JSON, jsonString, headers);
+	// }
 
 	/**
 	 * 直接输出JSON.
@@ -218,9 +387,68 @@ public abstract class BaseStruts2Action<T> extends ActionSupport implements
 	 *            Java对象,将被转化为json字符串.
 	 * @see #render(String, String, String...)
 	 */
-	public void renderJson(final Object object, final String... headers) {
-		String jsonString = JSONObject.fromObject(object).toString();
-		render(JSON, jsonString, headers);
+	// public void renderJson(final Object object, final String... headers) {
+	// String jsonString = JSONObject.fromObject(object).toString();
+	// render(JSON, jsonString, headers);
+	// }
+
+	/**
+	 * 直接输出支持跨域Mashup的JSONP.
+	 * 
+	 * @param callbackName
+	 *            callback函数名.
+	 * @param object
+	 *            Java对象,可以是List<POJO>, POJO[], POJO ,也可以Map名值对, 将被转化为json字符串.
+	 */
+	public void renderJsonp(final String callbackName, final Object object,
+			final String... headers) {
+		String jsonString = null;
+		try {
+			jsonString = mapper.writeValueAsString(object);
+		} catch (IOException e) {
+			throw new IllegalArgumentException(e);
+		}
+
+		String result = new StringBuilder().append(callbackName).append("(")
+				.append(jsonString).append(");").toString();
+
+		// 渲染Content-Type为javascript的返回内容,输出结果为javascript语句,
+		// 如callback197("{html:'Hello World!!!'}");
+		render(JS_TYPE, result, headers);
+	}
+
+	/**
+	 * 分析并设置contentType与headers.
+	 */
+	private static HttpServletResponse initResponseHeader(
+			final String contentType, final String... headers) {
+		// 分析headers参数
+		String encoding = ENCODING_DEFAULT;
+		boolean noCache = NOCACHE_DEFAULT;
+		for (String header : headers) {
+			String headerName = StringUtils.substringBefore(header, ":");
+			String headerValue = StringUtils.substringAfter(header, ":");
+
+			if (StringUtils.equalsIgnoreCase(headerName, ENCODING_PREFIX)) {
+				encoding = headerValue;
+			} else if (StringUtils.equalsIgnoreCase(headerName, NOCACHE_PREFIX)) {
+				noCache = Boolean.parseBoolean(headerValue);
+			} else {
+				throw new IllegalArgumentException(headerName
+						+ "不是一个合法的header类型");
+			}
+		}
+
+		HttpServletResponse response = ServletActionContext.getResponse();
+
+		// 设置headers参数
+		String fullContentType = contentType + ";charset=" + encoding;
+		response.setContentType(fullContentType);
+		if (noCache) {
+			setDisableCacheHeader(response);
+		}
+
+		return response;
 	}
 
 	public String refreshGridModel() {
