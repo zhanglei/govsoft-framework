@@ -126,11 +126,8 @@
 			<artifactId>spring-tx</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
-		<!--
-			<dependency> <groupId>aopalliance</groupId>
-			<artifactId>aopalliance</artifactId> <version>1.0</version>
-			</dependency>
-		-->
+		<!-- <dependency> <groupId>aopalliance</groupId> <artifactId>aopalliance</artifactId> 
+			<version>1.0</version> </dependency> -->
 		<dependency>
 			<groupId>org.aspectj</groupId>
 			<artifactId>aspectjrt</artifactId>
@@ -171,15 +168,11 @@
 			<artifactId>hibernate-envers</artifactId>
 			<version>${hibernate.version}</version>
 		</dependency>
-		<!--
-			<dependency> <groupId>org.hibernate</groupId>
-			<artifactId>ejb3-persistence</artifactId> <version>1.0.2.GA</version>
-			</dependency> <dependency> <groupId>org.hibernate</groupId>
-			<artifactId>hibernate-annotations</artifactId>
-			<version>3.5.6-Final</version> </dependency> <dependency>
-			<groupId>antlr</groupId> <artifactId>antlr</artifactId>
-			<version>2.7.6</version> </dependency>
-		-->
+		<!-- <dependency> <groupId>org.hibernate</groupId> <artifactId>ejb3-persistence</artifactId> 
+			<version>1.0.2.GA</version> </dependency> <dependency> <groupId>org.hibernate</groupId> 
+			<artifactId>hibernate-annotations</artifactId> <version>3.5.6-Final</version> 
+			</dependency> <dependency> <groupId>antlr</groupId> <artifactId>antlr</artifactId> 
+			<version>2.7.6</version> </dependency> -->
 		<dependency>
 			<groupId>c3p0</groupId>
 			<artifactId>c3p0</artifactId>
@@ -191,11 +184,8 @@
 			<version>3.12.1.GA</version>
 			<scope>runtime</scope>
 		</dependency>
-		<!--
-			<dependency> <groupId>xml-apis</groupId>
-			<artifactId>xml-apis</artifactId> <version>2.0.2</version>
-			</dependency>
-		-->
+		<!-- <dependency> <groupId>xml-apis</groupId> <artifactId>xml-apis</artifactId> 
+			<version>2.0.2</version> </dependency> -->
 		<dependency>
 			<groupId>dom4j</groupId>
 			<artifactId>dom4j</artifactId>
@@ -499,7 +489,7 @@
 		</dependency>
 		<!-- Apache Commons utils end -->
 
-		<!-- logging begin-->
+		<!-- logging begin -->
 		<!-- slf4j -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
@@ -541,18 +531,18 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		<!-- logging end-->
+		<!-- logging end -->
 
-		<!-- ehcache begin-->
+		<!-- ehcache begin -->
 		<dependency>
 			<groupId>net.sf.ehcache</groupId>
 			<artifactId>ehcache-core</artifactId>
-			<version>2.2.0</version>
+			<version>2.4.0</version>
 		</dependency>
 		<dependency>
 			<groupId>net.sf.ehcache</groupId>
 			<artifactId>ehcache-web</artifactId>
-			<version>2.0.2</version>
+			<version>2.0.3</version>
 			<exclusions>
 				<exclusion>
 					<groupId>net.sf.ehcache</groupId>
@@ -565,7 +555,7 @@
 			<artifactId>ehcache</artifactId>
 			<version>1.6.2</version>
 		</dependency>
-		<!-- ehcache end-->
+		<!-- ehcache end -->
 
 		<!-- jms begin -->
 		<dependency>
@@ -594,15 +584,15 @@
 		</dependency>
 		<!-- jms end -->
 
-		<!-- quartz begin-->
+		<!-- quartz begin -->
 		<dependency>
 			<groupId>org.quartz-scheduler</groupId>
 			<artifactId>quartz</artifactId>
 			<version>1.8.4</version>
 		</dependency>
-		<!-- quartz end-->
+		<!-- quartz end -->
 
-		<!-- memcached begin-->
+		<!-- memcached begin -->
 		<dependency>
 			<groupId>spy</groupId>
 			<artifactId>memcached</artifactId>
@@ -656,10 +646,10 @@
 		<dependency>
 			<groupId>org.wltea</groupId>
 			<artifactId>IKAnalyzer</artifactId>
-			<version>3.2.5</version>
+			<version>3.2.8</version>
 		</dependency>
 
-		<!-- Apache Mina begin-->
+		<!-- Apache Mina begin -->
 		<dependency>
 			<groupId>org.apache.mina</groupId>
 			<artifactId>mina-core</artifactId>
@@ -676,7 +666,7 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		<!-- Apache Mina end-->
+		<!-- Apache Mina end -->
 
 		<!-- email begin -->
 		<dependency>
@@ -703,11 +693,8 @@
 			<version>0.2.4</version>
 		</dependency>
 
-		<!--
-			<dependency> <groupId>com.google.collections</groupId>
-			<artifactId>google-collections</artifactId> <version>1.0</version>
-			</dependency>
-		-->
+		<!-- <dependency> <groupId>com.google.collections</groupId> <artifactId>google-collections</artifactId> 
+			<version>1.0</version> </dependency> -->
 
 		<dependency>
 			<groupId>org.phprpc</groupId>
@@ -726,10 +713,8 @@
 			<artifactId>joda-time</artifactId>
 			<version>1.6.2</version>
 		</dependency>
-		<!--
-			<dependency> <groupId>com.google.guava</groupId>
-			<artifactId>guava</artifactId> <version>r07</version> </dependency>
-		-->
+		<!-- <dependency> <groupId>com.google.guava</groupId> <artifactId>guava</artifactId> 
+			<version>r07</version> </dependency> -->
 		<!-- wro4j -->
 		<dependency>
 			<groupId>ro.isdc.wro4j</groupId>
@@ -772,7 +757,7 @@
 		<jackson.version>1.7.3</jackson.version>
 		<spring-security.version>3.0.5.RELEASE</spring-security.version>
 		<slf4j.version>1.6.1</slf4j.version>
-		<wro4j.version>1.3.3</wro4j.version>
+		<wro4j.version>1.3.5</wro4j.version>
 	</properties>
 	<build>
 		<finalName>govsoft-framework</finalName>
@@ -832,37 +817,54 @@
 				<version>2.1.2</version>
 			</plugin>
 
-			<!-- clean插件-->
+			<!-- clean插件 -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-clean-plugin</artifactId>
 				<version>2.4.1</version>
 			</plugin>
 
-			<!-- install插件-->
+			<!-- install插件 -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-install-plugin</artifactId>
 				<version>2.3.1</version>
 			</plugin>
 
-			<!-- deploy插件-->
+			<!-- deploy插件 -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-deploy-plugin</artifactId>
 				<version>2.5</version>
 			</plugin>
 
-			<!-- tomcat插件-->
+			<!-- tomcat插件 -->
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>tomcat-maven-plugin</artifactId>
-				<version>1.0</version>
+				<version>1.1</version>
+				<executions>
+					<execution>
+						<id>tomcat-deploy</id>
+						<phase>deploy</phase>
+						<goals>
+							<goal>deploy</goal>
+						</goals>
+					</execution>
+				</executions>
 				<configuration>
+					<url>http://localhost:8080/manager</url>
+					<username>tomcat</username>
+					<password>tomcat</password>
+					<path>/${project.build.finalName}</path>
+					<port>8080</port>
+					<!-- <warSourceDirectory>webapp</warSourceDirectory> -->
+					<!-- <tomcatWebXml>${project.build.directory}/${project.build.finalName}/WEB-INF/web.xml</tomcatWebXml> -->
 				</configuration>
+
 			</plugin>
 
-			<!-- yuicompressor插件-->
+			<!-- yuicompressor插件 -->
 			<plugin>
 				<groupId>net.sf.alchim</groupId>
 				<artifactId>yuicompressor-maven-plugin</artifactId>
@@ -870,17 +872,13 @@
 				<executions>
 					<execution>
 						<goals>
-							<!-- 
-							<goal>jslint</goal>
-							 -->
+							<!-- <goal>jslint</goal> -->
 							<goal>compress</goal>
 						</goals>
 					</execution>
 				</executions>
 				<configuration>
-					<!--
-					<aggregations></aggregations>
-					-->
+					<!-- <aggregations></aggregations> -->
 					<disableOptimizations>false</disableOptimizations>
 					<encoding>UTF-8</encoding>
 					<excludes>
@@ -923,21 +921,18 @@
 		</plugins>
 	</build>
 	<distributionManagement>
-		<!-- 以文件的方式发布  -->
-		<!--
-			<repository> <id>proficio-repository</id> <name>Proficio
-			Repository</name> <url>file://${basedir}/target/deploy</url>
-			</repository>
-		-->
+		<!-- 以文件的方式发布 -->
+		<!-- <repository> <id>proficio-repository</id> <name>Proficio Repository</name> 
+			<url>file://${basedir}/target/deploy</url> </repository> -->
 		<!-- 部署配置发布版本仓库 -->
 		<repository>
-			<id>releases</id>
+			<id>nexus-releases</id>
 			<name>Internal Releases</name>
 			<url>http://localhost:8081/nexus/content/repositories/releases</url>
 		</repository>
 		<!-- 部署配置快照版本仓库 -->
 		<snapshotRepository>
-			<id>Snapshots</id>
+			<id>nexus-snapshots</id>
 			<name>Internal
 				Snapshots</name>
 			<url>http://localhost:8081/nexus/content/repositories/snapshots</url>
