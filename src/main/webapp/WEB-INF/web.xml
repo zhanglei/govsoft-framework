@@ -3,10 +3,8 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
 	<display-name>govsoft-framework</display-name>
 
-	<!--
-			Spring ApplicationContext配置文件的路径,可使用通配符,多个路径用,号分隔 此参数用于后面的Spring
-			Context Loader
-		-->
+	<!-- Spring ApplicationContext配置文件的路径,可使用通配符,多个路径用,号分隔 此参数用于后面的Spring Context 
+		Loader -->
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>classpath*:/applicationContext*.xml</param-value>
@@ -18,14 +16,14 @@
 		<param-value>ApplicationResources</param-value>
 	</context-param>
 
-	<!-- Filter 定义  -->
-	
-	<!-- SpringSecurity filter-->
-	<filter> 
+	<!-- Filter 定义 -->
+
+	<!-- SpringSecurity filter -->
+	<filter>
 		<filter-name>springSecurityFilterChain</filter-name>
-		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class> 
+		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
 	</filter>
-	
+
 	<!-- Character Encoding filter -->
 	<filter>
 		<filter-name>encodingFilter</filter-name>
@@ -53,11 +51,11 @@
 		</init-param>
 	</filter>
 
-	<!-- Hibernate Open Session In View filter-->
+	<!-- Hibernate Open Session In View filter -->
 	<filter>
 		<filter-name>hibernateOpenSessionInViewFilter</filter-name>
 		<filter-class>org.springframework.orm.hibernate3.support.OpenSessionInViewFilter</filter-class>
-		<!-- 是否单个Session-->
+		<!-- 是否单个Session -->
 		<init-param>
 			<param-name>singleSession</param-name>
 			<param-value>false</param-value>
@@ -66,7 +64,7 @@
 			<param-name>flushMode</param-name>
 			<param-value>AUTO</param-value>
 		</init-param>
-		<!-- 你在applicationCointext*.xml中配置的SessionFactory bean的id名-->
+		<!-- 你在applicationCointext*.xml中配置的SessionFactory bean的id名 -->
 		<init-param>
 			<param-name>sessionFactoryBeanName</param-name>
 			<param-value>sessionFactory</param-value>
@@ -78,7 +76,7 @@
 		<filter-name>urlRewriteFilter</filter-name>
 		<filter-class>org.tuckey.web.filters.urlrewrite.UrlRewriteFilter</filter-class>
 	</filter>
-	
+
 	<filter>
 		<filter-name>WebResourceOptimizer</filter-name>
 		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
@@ -114,11 +112,11 @@
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
 
-	<filter-mapping> 
-		<filter-name>springSecurityFilterChain</filter-name> 
+	<filter-mapping>
+		<filter-name>springSecurityFilterChain</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
-	
+
 	<filter-mapping>
 		<filter-name>simplePageCachingFilter</filter-name>
 		<url-pattern>*.jsp</url-pattern>
@@ -133,14 +131,14 @@
 		<dispatcher>INCLUDE</dispatcher>
 		<dispatcher>FORWARD</dispatcher>
 	</filter-mapping>
-		
+
 	<filter-mapping>
 		<filter-name>urlRewriteFilter</filter-name>
 		<url-pattern>/*</url-pattern>
 		<dispatcher>REQUEST</dispatcher>
 		<dispatcher>FORWARD</dispatcher>
 	</filter-mapping>
-	
+
 	<filter-mapping>
 		<filter-name>WebResourceOptimizer</filter-name>
 		<url-pattern>/wro/*</url-pattern>
@@ -179,15 +177,19 @@
 		<listener-class>com.govsoft.framework.web.listener.StartupListener</listener-class>
 	</listener>
 
-	<!--
-			The HttpSessionEventPublisher will publish HttpSessionCreatedEvent and HttpSessionDestroyedEvent to the
-			WebApplicationContext
-		-->
-	
-	<listener> 
+	<!-- The HttpSessionEventPublisher will publish HttpSessionCreatedEvent 
+		and HttpSessionDestroyedEvent to the WebApplicationContext -->
+
+	<listener>
 		<listener-class>org.springframework.security.web.session.HttpSessionEventPublisher</listener-class>
 	</listener>
-	
+
+	<!-- Spring MVC -->
+	<!-- <servlet> <servlet-name>dispatcher</servlet-name> <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class> 
+		<init-param> <description>加载Spring MVC的配置文件</description> <param-name>contextConfigLocation</param-name> 
+		<param-value>classpath*:/applicationContext-servlet.xml</param-value> </init-param> 
+		<load-on-startup>1</load-on-startup> </servlet> <servlet-mapping> <servlet-name>dispatcher</servlet-name> 
+		<url-pattern>*.do</url-pattern> </servlet-mapping> -->
 	<!-- Dwr Servlet 配置 -->
 	<servlet>
 		<servlet-name>dwr-invoker</servlet-name>
@@ -211,7 +213,7 @@
 		<servlet-name>CXFServlet</servlet-name>
 		<url-pattern>/ws/*</url-pattern>
 	</servlet-mapping>
-	
+
 	<!-- Jersey Servlet 配置 -->
 	<servlet>
 		<servlet-name>JerseyServlet</servlet-name>
@@ -226,7 +228,7 @@
 		<servlet-name>JerseyServlet</servlet-name>
 		<url-pattern>/rs/*</url-pattern>
 	</servlet-mapping>
-	
+
 	<!-- session超时定义,单位为分钟 -->
 	<session-config>
 		<session-timeout>30</session-timeout>
@@ -253,8 +255,8 @@
 		<welcome-file>index.htm</welcome-file>
 		<welcome-file>index.jsp</welcome-file>
 	</welcome-file-list>
-	
-	<mime-mapping> 
+
+	<mime-mapping>
 		<extension>rar</extension>
 		<mime-type>application/zip</mime-type>
 	</mime-mapping>

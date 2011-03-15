@@ -28,7 +28,7 @@ import com.govsoft.framework.service.UserService;
 				+ BaseStruts2Action.LIST, type = "redirect"),
 		@Result(name = "form", location = UserAction.PREFIX
 				+ BaseStruts2Action.EDIT, type = "redirect"),
-		@Result(name = "SHOW", location = UserAction.PREFIX
+		@Result(name = "show", location = UserAction.PREFIX
 				+ BaseStruts2Action.SHOW, type = "redirect") })
 public class UserAction extends BaseStruts2Action<User> {
 
