@@ -187,7 +187,7 @@
 	<!-- Spring MVC -->
 	<!-- <servlet> <servlet-name>dispatcher</servlet-name> <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class> 
 		<init-param> <description>加载Spring MVC的配置文件</description> <param-name>contextConfigLocation</param-name> 
-		<param-value>classpath*:/applicationContext-servlet.xml</param-value> </init-param> 
+		<param-value>classpath*:/spring-servlet.xml</param-value> </init-param> 
 		<load-on-startup>1</load-on-startup> </servlet> <servlet-mapping> <servlet-name>dispatcher</servlet-name> 
 		<url-pattern>*.do</url-pattern> </servlet-mapping> -->
 	<!-- Dwr Servlet 配置 -->
@@ -250,6 +250,10 @@
 		<error-code>403</error-code>
 		<location>/commons/403.jsp</location>
 	</error-page>
+	<error-page>
+        <error-code>401</error-code>
+        <location>/commons/unauthorized.jsp</location>
+    </error-page>
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>
 		<welcome-file>index.htm</welcome-file>
