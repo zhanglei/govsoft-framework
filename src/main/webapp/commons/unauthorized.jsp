@@ -6,7 +6,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-cn" lang="zh-cn">
 <head>
 <%@ include file="/commons/meta.jsp"%>
-<title>GovSoft系统</title>
+<title>un authorized</title>
 <%@ include file="/commons/header.jsp"%>
 <script type="text/javascript" charset="utf-8">
 

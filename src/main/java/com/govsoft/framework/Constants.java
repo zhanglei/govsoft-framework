@@ -24,4 +24,9 @@ public class Constants {
 	public static final String ATTACHED_PICTURE_PATH = ATTACHED_PATH
 			+ "/picture";
 
+    /**
+     * File separator from System properties
+     */
+    public static final String FILE_SEP = System.getProperty("file.separator");
+	
 }
