@@ -1,1 +1,1 @@
-<script src="${ctx}/widgets/kindeditor/kindeditor${suffix}.js${gzip}" type="text/javascript" charset="utf-8"></script>
+<script src="${ctx}/wro/kindeditor.js" type="text/javascript" charset="utf-8"></script>
