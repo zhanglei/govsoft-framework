@@ -28,5 +28,29 @@ public class Constants {
      * File separator from System properties
      */
     public static final String FILE_SEP = System.getProperty("file.separator");
+    
+    
+    /**
+	 * UTF-8编码
+	 */
+	public static final String ENCODING_DEFAULT = "UTF-8";
+	
+	/**
+	 * HTTP POST请求
+	 */
+	public static final String POST_METHOD = "POST";
+	/**
+	 * HTTP GET请求
+	 */
+	public static final String GET_METHOD = "GET";
+    
+    /**
+	 * cookie中的JSESSIONID名称
+	 */
+	public static final String JSESSION_COOKIE = "JSESSIONID";
+	/**
+	 * url中的jsessionid名称
+	 */
+	public static final String JSESSION_URL = "jsessionid";
 	
 }

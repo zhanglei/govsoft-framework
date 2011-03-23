@@ -1,122 +1,251 @@
 package com.govsoft.framework.web.util;
 
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.StringTokenizer;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.web.util.UrlPathHelper;
 
-public final class RequestUtils {
+import com.govsoft.framework.Constants;
 
-	private static final Log log = LogFactory.getLog(RequestUtils.class);
-
-	public RequestUtils() {
-		super();
-	}
-
-	/**
-	 * Convenience method to set a cookie
-	 * 
-	 * @param response
-	 *            the current response
-	 * @param name
-	 *            the name of the cookie
-	 * @param value
-	 *            the value of the cookie
-	 * @param path
-	 *            the path to set it on
-	 */
-	public static void setCookie(HttpServletResponse response, String name,
-			String value, String path) {
-		if (log.isDebugEnabled()) {
-			log.debug("Setting cookie '" + name + "' on path '" + path + "'");
-		}
-
-		Cookie cookie = new Cookie(name, value);
-		cookie.setSecure(false);
-		cookie.setPath(path);
-		cookie.setMaxAge(3600 * 24 * 30); // 30 days
-
-		response.addCookie(cookie);
-	}
+/**
+ * HttpServletRequest帮助类
+ * 
+ * 
+ */
+public class RequestUtils {
+	private static final Logger log = LoggerFactory
+			.getLogger(RequestUtils.class);
 
 	/**
-	 * Convenience method to get a cookie by name
+	 * 获取QueryString的参数，并使用URLDecoder以UTF-8格式转码。如果请求是以post方法提交的，
+	 * 那么将通过HttpServletRequest#getParameter获取。
 	 * 
 	 * @param request
-	 *            the current request
+	 *            web请求
 	 * @param name
-	 *            the name of the cookie to find
-	 * 
-	 * @return the cookie (if found), null if not found
+	 *            参数名称
+	 * @return
 	 */
-	public static Cookie getCookie(HttpServletRequest request, String name) {
-		Cookie[] cookies = request.getCookies();
-		Cookie returnCookie = null;
+	// public static String getQueryParam(HttpServletRequest request, String
+	// name) {
+	// if (StringUtils.isBlank(name)) {
+	// return null;
+	// }
+	// if (request.getMethod().equalsIgnoreCase(POST_METHOD)) {
+	// return request.getParameter(name);
+	// }
+	// String s = request.getQueryString();
+	// if (StringUtils.isBlank(s)) {
+	// return null;
+	// }
+	// try {
+	// s = URLDecoder.decode(s, UTF8);
+	// } catch (UnsupportedEncodingException e) {
+	// log.error("encoding " + UTF8 + " not support?", e);
+	// }
+	// String[] values = parseQueryString(s).get(name);
+	// if (values != null && values.length > 0) {
+	// return values[values.length - 1];
+	// } else {
+	// return null;
+	// }
+	// }
 
-		if (cookies == null) {
-			return returnCookie;
+	@SuppressWarnings("unchecked")
+	// public static Map<String, Object> getQueryParams(HttpServletRequest
+	// request) {
+	// Map<String, String[]> map;
+	// if (request.getMethod().equalsIgnoreCase(POST_METHOD)) {
+	// map = request.getParameterMap();
+	// } else {
+	// String s = request.getQueryString();
+	// if (StringUtils.isBlank(s)) {
+	// return new HashMap<String, Object>();
+	// }
+	// try {
+	// s = URLDecoder.decode(s, ENCODING_DEFAULT);
+	// } catch (UnsupportedEncodingException e) {
+	// log.error("encoding " + ENCODING_DEFAULT + " not support?", e);
+	// }
+	// map = parseQueryString(s);
+	// }
+	//
+	// Map<String, Object> params = new HashMap<String, Object>(map.size());
+	// int len;
+	// for (Map.Entry<String, String[]> entry : map.entrySet()) {
+	// len = entry.getValue().length;
+	// if (len == 1) {
+	// params.put(entry.getKey(), entry.getValue()[0]);
+	// } else if (len > 1) {
+	// params.put(entry.getKey(), entry.getValue());
+	// }
+	// }
+	// return params;
+	// }
+	/**
+	 * 
+	 * Parses a query string passed from the client to the server and builds a
+	 * <code>HashTable</code> object with key-value pairs. The query string
+	 * should be in the form of a string packaged by the GET or POST method,
+	 * that is, it should have key-value pairs in the form <i>key=value</i>,
+	 * with each pair separated from the next by a &amp; character.
+	 * 
+	 * <p>
+	 * A key can appear more than once in the query string with different
+	 * values. However, the key appears only once in the hashtable, with its
+	 * value being an array of strings containing the multiple values sent by
+	 * the query string.
+	 * 
+	 * <p>
+	 * The keys and values in the hashtable are stored in their decoded form, so
+	 * any + characters are converted to spaces, and characters sent in
+	 * hexadecimal notation (like <i>%xx</i>) are converted to ASCII characters.
+	 * 
+	 * @param s
+	 *            a string containing the query to be parsed
+	 * 
+	 * @return a <code>HashTable</code> object built from the parsed key-value
+	 *         pairs
+	 * 
+	 * @exception IllegalArgumentException
+	 *                if the query string is invalid
+	 * 
+	 */
+	public static Map<String, String[]> parseQueryString(String s) {
+		String valArray[] = null;
+		if (s == null) {
+			throw new IllegalArgumentException();
 		}
-
-		for (Cookie thisCookie : cookies) {
-			if (thisCookie.getName().equals(name)) {
-				// cookies with no value do me no good!
-				if (!thisCookie.getValue().equals("")) {
-					returnCookie = thisCookie;
-
-					break;
+		Map<String, String[]> ht = new HashMap<String, String[]>();
+		StringTokenizer st = new StringTokenizer(s, "&");
+		while (st.hasMoreTokens()) {
+			String pair = (String) st.nextToken();
+			int pos = pair.indexOf('=');
+			if (pos == -1) {
+				continue;
+			}
+			String key = pair.substring(0, pos);
+			String val = pair.substring(pos + 1, pair.length());
+			if (ht.containsKey(key)) {
+				String oldVals[] = (String[]) ht.get(key);
+				valArray = new String[oldVals.length + 1];
+				for (int i = 0; i < oldVals.length; i++) {
+					valArray[i] = oldVals[i];
 				}
+				valArray[oldVals.length] = val;
+			} else {
+				valArray = new String[1];
+				valArray[0] = val;
+			}
+			ht.put(key, valArray);
+		}
+		return ht;
+	}
+
+	@SuppressWarnings("unchecked")
+	public static Map<String, String> getRequestMap(HttpServletRequest request,
+			String prefix) {
+		Map<String, String> map = new HashMap<String, String>();
+		Enumeration<String> names = request.getParameterNames();
+		String name;
+		while (names.hasMoreElements()) {
+			name = names.nextElement();
+			if (name.startsWith(prefix)) {
+				request.getParameterValues(name);
+				map.put(name.substring(prefix.length()),
+						StringUtils.join(request.getParameterValues(name), ','));
+			}
+		}
+		return map;
+	}
+
+	/**
+	 * 获取访问者IP
+	 * 
+	 * 在一般情况下使用Request.getRemoteAddr()即可，但是经过nginx等反向代理软件后，这个方法会失效。
+	 * 
+	 * 本方法先从Header中获取X-Real-IP，如果不存在再从X-Forwarded-For获得第一个IP(用,分割)，
+	 * 如果还不存在则调用Request .getRemoteAddr()。
+	 * 
+	 * @param request
+	 * @return
+	 */
+	public static String getIpAddr(HttpServletRequest request) {
+		String ip = request.getHeader("X-Real-IP");
+		if (!StringUtils.isBlank(ip) && !"unknown".equalsIgnoreCase(ip)) {
+			return ip;
+		}
+		ip = request.getHeader("X-Forwarded-For");
+		if (!StringUtils.isBlank(ip) && !"unknown".equalsIgnoreCase(ip)) {
+			// 多次反向代理后会有多个IP值，第一个为真实IP。
+			int index = ip.indexOf(',');
+			if (index != -1) {
+				return ip.substring(0, index);
+			} else {
+				return ip;
+			}
+		} else {
+			return request.getRemoteAddr();
+		}
+	}
+
+	/**
+	 * 获得当的访问路径
+	 * 
+	 * HttpServletRequest.getRequestURL+"?"+HttpServletRequest.getQueryString
+	 * 
+	 * @param request
+	 * @return
+	 */
+	public static String getLocation(HttpServletRequest request) {
+		UrlPathHelper helper = new UrlPathHelper();
+		StringBuffer buff = request.getRequestURL();
+		String uri = request.getRequestURI();
+		String origUri = helper.getOriginatingRequestUri(request);
+		buff.replace(buff.length() - uri.length(), buff.length(), origUri);
+		String queryString = helper.getOriginatingQueryString(request);
+		if (queryString != null) {
+			buff.append("?").append(queryString);
+		}
+		return buff.toString();
+	}
+
+	/**
+	 * 获得请求的session id，但是HttpServletRequest#getRequestedSessionId()方法有一些问题。
+	 * 当存在部署路径的时候，会获取到根路径下的jsessionid。
+	 * 
+	 * @see HttpServletRequest#getRequestedSessionId()
+	 * 
+	 * @param request
+	 * @return
+	 */
+	public static String getRequestedSessionId(HttpServletRequest request) {
+		String sid = request.getRequestedSessionId();
+		String ctx = request.getContextPath();
+		// 如果session id是从url中获取，或者部署路径为空，那么是在正确的。
+		if (request.isRequestedSessionIdFromURL() || StringUtils.isBlank(ctx)) {
+			return sid;
+		} else {
+			// 手动从cookie获取
+			Cookie cookie = CookieUtils.getCookie(request,
+					Constants.JSESSION_COOKIE);
+			if (cookie != null) {
+				return cookie.getValue();
+			} else {
+				return null;
 			}
 		}
 
-		return returnCookie;
 	}
 
-	/**
-	 * Convenience method for deleting a cookie by name
-	 * 
-	 * @param response
-	 *            the current web response
-	 * @param cookie
-	 *            the cookie to delete
-	 * @param path
-	 *            the path on which the cookie was set (i.e. /appfuse)
-	 */
-	public static void deleteCookie(HttpServletResponse response,
-			Cookie cookie, String path) {
-		if (cookie != null) {
-			// Delete the cookie by setting its maximum age to zero
-			cookie.setMaxAge(0);
-			cookie.setPath(path);
-			response.addCookie(cookie);
-		}
-	}
-
-	/**
-	 * Convenience method to get the application's URL based on request
-	 * variables.
-	 * 
-	 * @param request
-	 *            the current request
-	 * @return URL to application
-	 */
-	public static String getURL(HttpServletRequest request) {
-		StringBuffer url = new StringBuffer();
-		int port = request.getServerPort();
-		if (port < 0) {
-			port = 80; // Work around java.net.URL bug
-		}
-		String scheme = request.getScheme();
-		url.append(scheme);
-		url.append("://");
-		url.append(request.getServerName());
-		if ((scheme.equals("http") && (port != 80))
-				|| (scheme.equals("https") && (port != 443))) {
-			url.append(':');
-			url.append(port);
-		}
-		url.append(request.getContextPath());
-		return url.toString();
+	public static void main(String[] args) {
 	}
 }
