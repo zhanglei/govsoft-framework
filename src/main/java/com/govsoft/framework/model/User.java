@@ -437,7 +437,7 @@ public class User extends BaseEntity implements UserDetails {
 		if (this == o) {
 			return true;
 		}
-		if (!(o instanceof Menu)) {
+		if (!(o instanceof User)) {
 			return false;
 		}
 		User that = (User) o;
